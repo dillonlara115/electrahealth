@@ -1,0 +1,63 @@
+/* Custom spacing for featured collection products and view all button */
+
+/* Convert to CSS Grid for better spacing control */
+.featured-collection .grid.product-grid {
+  display: grid !important;
+  gap: 20px; /* 60px vertical, 20px horizontal */
+  grid-template-columns: repeat(4, 1fr) !important;
+  margin-left: 0 !important; /* Remove negative margin from flex layout */
+}
+
+/* Remove flex-basis and width constraints from grid items */
+.featured-collection .grid.product-grid .grid__item {
+  flex: none !important;
+  width: auto !important;
+  max-width: none !important;
+  padding-left: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+@media screen and (max-width: 989px) {
+  .featured-collection .grid.product-grid {
+    gap: 40px 15px !important; /* 40px vertical, 15px horizontal */
+    grid-template-columns: repeat(2, 1fr) !important; /* 2 columns on tablet */
+  }
+}
+
+@media screen and (max-width: 749px) {
+  .featured-collection .grid.product-grid {
+    gap: 30px 15px !important; /* 30px vertical, 15px horizontal */
+    grid-template-columns: repeat(2, 1fr) !important; /* 2 columns on mobile */
+  }
+}
+
+/* Add more white space above the "View all" button */
+.featured-collection .collection__view-all {
+  margin-top: 4rem !important;
+}
+
+@media screen and (max-width: 749px) {
+  .featured-collection .collection__view-all {
+    margin-top: 3rem !important;
+  }
+}
+
+/* Additional bottom spacing for the button itself */
+.featured-collection .collection__view-all a:not(.link) {
+  margin-top: 0;
+}
+
+/* Add rounded borders to product images */
+.featured-collection .card__media img,
+.featured-collection .card__media .media img {
+  border-radius: var(--radius-md) !important;
+}
+
+/* Ensure the media wrapper also has rounded corners */
+.featured-collection .card__media,
+.featured-collection .card__media .media {
+  border-bottom-left-radius: var(--radius-md) !important;
+  border-bottom-right-radius: var(--radius-md) !important;
+  overflow: hidden;
+}
+

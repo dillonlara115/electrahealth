@@ -63,14 +63,14 @@
         "heading": {
           "type": "heading",
           "settings": {
-            "heading": "Talk about your brand",
-            "heading_size": "h1"
+            "heading": "Tools You Can Trust for a Healthier Environment",
+            "heading_size": "h2"
           }
         },
         "text": {
           "type": "text",
           "settings": {
-            "text": "<p>Share information about your brand with your customers. Describe a product, make announcements, or welcome customers to your store.</p>"
+            "text": "<p>Creating a safer space shouldn’t be complicated. We’re here to help you understand EMFs, choose the right tools, and take simple steps that make a real difference. Explore expert-recommended products designed for everyday homes and families.</p>"
           }
         }
       },
@@ -84,7 +84,50 @@
         "color_scheme": "scheme-1",
         "full_width": true,
         "padding_top": 40,
-        "padding_bottom": 0
+        "padding_bottom": 40
+      }
+    },
+    "featured_categories_VHpCFM": {
+      "type": "featured-categories",
+      "blocks": {
+        "category_Eq47mi": {
+          "type": "category",
+          "settings": {
+            "image": "shopify://shop_images/Safer.jpg",
+            "title": "Safer Computing & Routers",
+            "link": ""
+          }
+        },
+        "category_QqMVqY": {
+          "type": "category",
+          "settings": {
+            "image": "shopify://shop_images/exclusive.jpg",
+            "title": "Exclusive Products",
+            "link": ""
+          }
+        },
+        "category_TAJWWp": {
+          "type": "category",
+          "settings": {
+            "image": "shopify://shop_images/measure.jpg",
+            "title": "Measure to Verify",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "category_Eq47mi",
+        "category_QqMVqY",
+        "category_TAJWWp"
+      ],
+      "name": "Featured Categories",
+      "settings": {
+        "heading": "Shop by Category",
+        "heading_size": "h1",
+        "columns_desktop": 3,
+        "color_scheme": "scheme-1",
+        "padding_top": 36,
+        "padding_bottom": 36
       }
     },
     "featured_collection": {
@@ -115,94 +158,74 @@
         "padding_bottom": 36
       }
     },
-    "collage": {
-      "type": "collage",
+    "featured_brands_GM6jyT": {
+      "type": "featured-brands",
       "blocks": {
-        "collection-0": {
-          "type": "collection",
+        "brand_DgKddG": {
+          "type": "brand",
           "settings": {
-            "collection": ""
-          }
-        },
-        "product": {
-          "type": "product",
-          "settings": {
-            "product": "",
-            "second_image": false
-          }
-        },
-        "collection-1": {
-          "type": "collection",
-          "settings": {
-            "collection": ""
-          }
-        }
-      },
-      "block_order": [
-        "collection-0",
-        "product",
-        "collection-1"
-      ],
-      "settings": {
-        "heading": "Multimedia collage",
-        "heading_size": "h2",
-        "desktop_layout": "left",
-        "mobile_layout": "collage",
-        "card_styles": "product-card-wrapper",
-        "color_scheme": "scheme-1",
-        "padding_top": 36,
-        "padding_bottom": 36
-      }
-    },
-    "multicolumn": {
-      "type": "multicolumn",
-      "blocks": {
-        "column1": {
-          "type": "column",
-          "settings": {
-            "title": "Column",
-            "text": "<p>Pair text with an image to focus on your chosen product, collection, or blog post. Add details on availability, style, or even provide a review.</p>",
-            "link_label": "",
+            "image": "shopify://shop_images/AlphaMain-1.png",
+            "brand_name": "AlphaLab Inc.",
             "link": ""
           }
         },
-        "column2": {
-          "type": "column",
+        "brand_EnR7NA": {
+          "type": "brand",
           "settings": {
-            "title": "Column",
-            "text": "<p>Pair text with an image to focus on your chosen product, collection, or blog post. Add details on availability, style, or even provide a review.</p>",
-            "link_label": "",
+            "image": "shopify://shop_images/LogoColor1.png",
+            "brand_name": "Stetzer Electric",
             "link": ""
           }
         },
-        "column3": {
-          "type": "column",
+        "brand_wyD6LW": {
+          "type": "brand",
           "settings": {
-            "title": "Column",
-            "text": "<p>Pair text with an image to focus on your chosen product, collection, or blog post. Add details on availability, style, or even provide a review.</p>",
-            "link_label": "",
+            "image": "shopify://shop_images/gighertz.png",
+            "brand_name": "GIGAHERTZ Solutions",
+            "link": ""
+          }
+        },
+        "brand_QR7GBk": {
+          "type": "brand",
+          "settings": {
+            "image": "shopify://shop_images/slt-logo-2022-swoosh-smaller-1664387667-89253.webp",
+            "brand_name": "SafeLiving Tech",
+            "link": ""
+          }
+        },
+        "brand_dVfFCW": {
+          "type": "brand",
+          "settings": {
+            "image": "shopify://shop_images/The-Shielding-Shop-1to1-2-e1677503466883.webp",
+            "brand_name": "The Shielding Shop",
+            "link": ""
+          }
+        },
+        "brand_Lf7LGm": {
+          "type": "brand",
+          "settings": {
+            "image": "shopify://shop_images/logo.webp",
+            "brand_name": "Electra Health",
             "link": ""
           }
         }
       },
       "block_order": [
-        "column1",
-        "column2",
-        "column3"
+        "brand_DgKddG",
+        "brand_EnR7NA",
+        "brand_wyD6LW",
+        "brand_QR7GBk",
+        "brand_dVfFCW",
+        "brand_Lf7LGm"
       ],
+      "name": "Featured Brands",
       "settings": {
-        "title": "",
+        "heading": "Featured Brands",
         "heading_size": "h1",
-        "image_width": "third",
-        "image_ratio": "adapt",
-        "button_label": "",
-        "button_link": "",
-        "columns_desktop": 3,
-        "column_alignment": "center",
-        "background_style": "none",
-        "color_scheme": "scheme-1",
-        "columns_mobile": "1",
-        "swipe_on_mobile": false,
+        "background_image": "shopify://shop_images/extra_clean_paper.png",
+        "background_color": "#e5e7eb",
+        "overlay_color": "#ffffff",
+        "overlay_opacity": 80,
         "padding_top": 36,
         "padding_bottom": 36
       }
@@ -211,8 +234,8 @@
   "order": [
     "image_banner",
     "rich_text",
+    "featured_categories_VHpCFM",
     "featured_collection",
-    "collage",
-    "multicolumn"
+    "featured_brands_GM6jyT"
   ]
 }
