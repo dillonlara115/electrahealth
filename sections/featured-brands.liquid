@@ -18,7 +18,7 @@
       background-image: url('{{ section.settings.background_image | image_url: width: 1920 }}');
       background-size: cover;
       background-position: center;
-      background-repeat: no-repeat;
+      background-repeat: repeat;
     {% endif %}
     {% if section.settings.background_color != blank %}
       background-color: {{ section.settings.background_color }};
@@ -63,7 +63,7 @@
           {%- endif -%}
         </div>
       {%- endif -%}
-      
+
       {%- if section.blocks.size > 0 -%}
         <div class="featured-brands-wrapper">
           <div class="featured-brands-grid" id="brands-grid-{{ section.id }}">
@@ -74,25 +74,22 @@
                     {%- if block.settings.link != blank -%}
                       <a href="{{ block.settings.link }}" class="featured-brand-card-link">
                     {%- endif -%}
-                      <div class="featured-brand-image-wrapper">
-                        {%- if block.settings.image != blank -%}
-                          {{
-                            block.settings.image
-                            | image_url: width: 400
-                            | image_tag:
-                              loading: 'lazy',
-                              class: 'featured-brand-image',
-                              alt: block.settings.brand_name
-                          }}
-                        {%- else -%}
-                          <div class="featured-brand-placeholder">
-                            {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
-                          </div>
-                        {%- endif -%}
-                      </div>
-                      {%- if block.settings.brand_name != blank -%}
-                        <h3 class="featured-brand-name">{{ block.settings.brand_name }}</h3>
+                    <div class="featured-brand-image-wrapper">
+                      {%- if block.settings.image != blank -%}
+                        {{
+                          block.settings.image
+                          | image_url: width: 400
+                          | image_tag: loading: 'lazy', class: 'featured-brand-image', alt: block.settings.brand_name
+                        }}
+                      {%- else -%}
+                        <div class="featured-brand-placeholder">
+                          {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+                        </div>
                       {%- endif -%}
+                    </div>
+                    {%- if block.settings.brand_name != blank -%}
+                      <h3 class="featured-brand-name">{{ block.settings.brand_name }}</h3>
+                    {%- endif -%}
                     {%- if block.settings.link != blank -%}
                       </a>
                     {%- endif -%}
@@ -107,34 +104,34 @@
 </section>
 
 <script>
-  (function() {
+  (function () {
     const grid = document.getElementById('brands-grid-{{ section.id }}');
     const prevBtn = document.querySelector('.featured-brands-{{ section.id }} .featured-brands-prev');
     const nextBtn = document.querySelector('.featured-brands-{{ section.id }} .featured-brands-next');
-    
+
     if (!grid || !prevBtn || !nextBtn) return;
-    
+
     const scrollAmount = 300;
-    
+
     prevBtn.addEventListener('click', () => {
       grid.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
     });
-    
+
     nextBtn.addEventListener('click', () => {
       grid.scrollBy({ left: scrollAmount, behavior: 'smooth' });
     });
-    
+
     // Update button states based on scroll position
     function updateButtons() {
       const isAtStart = grid.scrollLeft <= 0;
       const isAtEnd = grid.scrollLeft >= grid.scrollWidth - grid.clientWidth - 10;
-      
+
       prevBtn.style.opacity = isAtStart ? '0.3' : '1';
       nextBtn.style.opacity = isAtEnd ? '0.3' : '1';
       prevBtn.disabled = isAtStart;
       nextBtn.disabled = isAtEnd;
     }
-    
+
     grid.addEventListener('scroll', updateButtons);
     updateButtons();
   })();
@@ -294,4 +291,3 @@
   ]
 }
 {% endschema %}
-
