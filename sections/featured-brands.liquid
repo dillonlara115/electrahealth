@@ -1,0 +1,297 @@
+{{ 'section-featured-brands.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+
+  .featured-brands-{{ section.id }} {
+    {% if section.settings.background_image != blank %}
+      background-image: url('{{ section.settings.background_image | image_url: width: 1920 }}');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    {% endif %}
+    {% if section.settings.background_color != blank %}
+      background-color: {{ section.settings.background_color }};
+    {% endif %}
+    position: relative;
+  }
+
+  .featured-brands-{{ section.id }}::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: {{ section.settings.overlay_color }};
+    opacity: {{ section.settings.overlay_opacity | divided_by: 100.0 }};
+    pointer-events: none;
+  }
+{%- endstyle -%}
+
+<section class="featured-brands featured-brands-{{ section.id }} section-{{ section.id }}-padding">
+  <div class="page-width">
+    <div class="featured-brands-container">
+      {%- if section.settings.heading != blank -%}
+        <div class="featured-brands-header">
+          <h2 class="featured-brands-heading {{ section.settings.heading_size }}">
+            {{ section.settings.heading }}
+          </h2>
+          {%- if section.blocks.size > 4 -%}
+            <div class="featured-brands-navigation">
+              <button class="featured-brands-nav-btn featured-brands-prev" aria-label="Previous brands">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </button>
+              <button class="featured-brands-nav-btn featured-brands-next" aria-label="Next brands">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </button>
+            </div>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+      
+      {%- if section.blocks.size > 0 -%}
+        <div class="featured-brands-wrapper">
+          <div class="featured-brands-grid" id="brands-grid-{{ section.id }}">
+            {%- for block in section.blocks -%}
+              {%- case block.type -%}
+                {%- when 'brand' -%}
+                  <div class="featured-brand-card" {{ block.shopify_attributes }}>
+                    {%- if block.settings.link != blank -%}
+                      <a href="{{ block.settings.link }}" class="featured-brand-card-link">
+                    {%- endif -%}
+                      <div class="featured-brand-image-wrapper">
+                        {%- if block.settings.image != blank -%}
+                          {{
+                            block.settings.image
+                            | image_url: width: 400
+                            | image_tag:
+                              loading: 'lazy',
+                              class: 'featured-brand-image',
+                              alt: block.settings.brand_name
+                          }}
+                        {%- else -%}
+                          <div class="featured-brand-placeholder">
+                            {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+                          </div>
+                        {%- endif -%}
+                      </div>
+                      {%- if block.settings.brand_name != blank -%}
+                        <h3 class="featured-brand-name">{{ block.settings.brand_name }}</h3>
+                      {%- endif -%}
+                    {%- if block.settings.link != blank -%}
+                      </a>
+                    {%- endif -%}
+                  </div>
+              {%- endcase -%}
+            {%- endfor -%}
+          </div>
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+<script>
+  (function() {
+    const grid = document.getElementById('brands-grid-{{ section.id }}');
+    const prevBtn = document.querySelector('.featured-brands-{{ section.id }} .featured-brands-prev');
+    const nextBtn = document.querySelector('.featured-brands-{{ section.id }} .featured-brands-next');
+    
+    if (!grid || !prevBtn || !nextBtn) return;
+    
+    const scrollAmount = 300;
+    
+    prevBtn.addEventListener('click', () => {
+      grid.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+    });
+    
+    nextBtn.addEventListener('click', () => {
+      grid.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+    });
+    
+    // Update button states based on scroll position
+    function updateButtons() {
+      const isAtStart = grid.scrollLeft <= 0;
+      const isAtEnd = grid.scrollLeft >= grid.scrollWidth - grid.clientWidth - 10;
+      
+      prevBtn.style.opacity = isAtStart ? '0.3' : '1';
+      nextBtn.style.opacity = isAtEnd ? '0.3' : '1';
+      prevBtn.disabled = isAtStart;
+      nextBtn.disabled = isAtEnd;
+    }
+    
+    grid.addEventListener('scroll', updateButtons);
+    updateButtons();
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Featured Brands",
+  "tag": "section",
+  "class": "section",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Featured Brands"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "label": "Heading size",
+      "options": [
+        {
+          "value": "h2",
+          "label": "Small"
+        },
+        {
+          "value": "h1",
+          "label": "Medium"
+        },
+        {
+          "value": "h0",
+          "label": "Large"
+        }
+      ],
+      "default": "h1"
+    },
+    {
+      "type": "header",
+      "content": "Background"
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Background image"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#e5e7eb"
+    },
+    {
+      "type": "color",
+      "id": "overlay_color",
+      "label": "Overlay color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "label": "Overlay opacity",
+      "default": 80
+    },
+    {
+      "type": "header",
+      "content": "Section padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 36
+    }
+  ],
+  "blocks": [
+    {
+      "type": "brand",
+      "name": "Brand",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Brand logo"
+        },
+        {
+          "type": "text",
+          "id": "brand_name",
+          "label": "Brand name",
+          "default": "Brand Name"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Featured Brands",
+      "blocks": [
+        {
+          "type": "brand",
+          "settings": {
+            "brand_name": "AlphaLab Inc."
+          }
+        },
+        {
+          "type": "brand",
+          "settings": {
+            "brand_name": "Stetzer Electric"
+          }
+        },
+        {
+          "type": "brand",
+          "settings": {
+            "brand_name": "GIGAHERTZ Solutions"
+          }
+        },
+        {
+          "type": "brand",
+          "settings": {
+            "brand_name": "SafeLiving Tech"
+          }
+        },
+        {
+          "type": "brand",
+          "settings": {
+            "brand_name": "The Shielding Shop"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+

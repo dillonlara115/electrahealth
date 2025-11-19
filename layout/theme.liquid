@@ -15,6 +15,11 @@
       <link rel="preconnect" href="https://fonts.shopifycdn.com" crossorigin>
     {%- endunless -%}
 
+    {%- comment -%} Google Fonts for Open Sans and Montserrat {%- endcomment -%}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+
     <title>
       {{ page_title }}
       {%- if current_tags %} &ndash; tagged "{{ current_tags | join: ', ' }}"{% endif -%}
@@ -100,14 +105,15 @@
       }
 
       :root {
-        --font-body-family: {{ settings.type_body_font.family }}, {{ settings.type_body_font.fallback_families }};
-        --font-body-style: {{ settings.type_body_font.style }};
-        --font-body-weight: {{ settings.type_body_font.weight }};
-        --font-body-weight-bold: {{ settings.type_body_font.weight | plus: 300 | at_most: 1000 }};
+        {%- comment -%} Override fonts with custom design system fonts {%- endcomment -%}
+        --font-body-family: var(--font-family-base);
+        --font-body-style: normal;
+        --font-body-weight: var(--font-weight-normal);
+        --font-body-weight-bold: var(--font-weight-bold);
 
-        --font-heading-family: {{ settings.type_header_font.family }}, {{ settings.type_header_font.fallback_families }};
-        --font-heading-style: {{ settings.type_header_font.style }};
-        --font-heading-weight: {{ settings.type_header_font.weight }};
+        --font-heading-family: var(--font-family-heading);
+        --font-heading-style: normal;
+        --font-heading-weight: var(--font-weight-semibold);
 
         --font-body-scale: {{ settings.body_scale | divided_by: 100.0 }};
         --font-heading-scale: {{ settings.heading_scale | times: 1.0 | divided_by: settings.body_scale }};
@@ -220,6 +226,110 @@
         --variant-pills-shadow-horizontal-offset: {{ settings.variant_pills_shadow_horizontal_offset }}px;
         --variant-pills-shadow-vertical-offset: {{ settings.variant_pills_shadow_vertical_offset }}px;
         --variant-pills-shadow-blur-radius: {{ settings.variant_pills_shadow_blur }}px;
+
+        {%- comment -%} Custom Design System Variables {%- endcomment -%}
+        
+        /* Layout Variables */
+        --aside-width: 400px;
+        --cart-aside-summary-height-with-discount: 300px;
+        --cart-aside-summary-height: 250px;
+        --grid-item-width: 355px;
+        --header-height: 80px;
+        --header-secondary-height: 48px;
+        --header-total-height: calc(var(--header-height) + var(--header-secondary-height));
+
+        /* Colors - Primary */
+        --color-primary: #17A2B8;
+        --color-primary-dark: #138496;
+        --color-primary-light: #20B2AA;
+
+        /* Colors - Accent/Teal */
+        --color-teal: #17A2B8;
+        --color-teal-dark: #138496;
+        --color-teal-light: #20B2AA;
+
+        /* Colors - Link */
+        --color-link: #4A9EFF;
+        --color-link-hover: #6BB0FF;
+
+        /* Colors - Neutral */
+        --color-dark: #000;
+        --color-light: #fff;
+        --color-gray-50: #f7f7f7;
+        --color-gray-100: #f0f0f0;
+        --color-gray-200: #e0e0e0;
+        --color-gray-300: #ccc;
+        --color-gray-400: #999;
+        --color-gray-500: #666;
+        --color-gray-600: #444;
+        --color-gray-700: #333;
+        --color-gray-800: #2a2a2a;
+        --color-gray-900: #1a1a1a;
+
+        /* Colors - Semantic */
+        --color-success: #28a745;
+        --color-error: #ff4444;
+        --color-warning: #ffc107;
+        --color-info: #17A2B8;
+
+        /* Typography */
+        --font-family-base: 'Open Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
+        --font-family-heading: 'Montserrat', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        --font-family-mono: 'Courier New', Courier, monospace;
+
+        --font-size-xs: 0.75rem;    /* 12px */
+        --font-size-sm: 0.875rem;   /* 14px */
+        --font-size-base: 1rem;     /* 16px */
+        --font-size-lg: 1.125rem;   /* 18px */
+        --font-size-xl: 1.25rem;    /* 20px */
+        --font-size-2xl: 1.5rem;    /* 24px */
+        --font-size-3xl: 1.875rem;  /* 30px */
+        --font-size-4xl: 2.25rem;   /* 36px */
+
+        --font-weight-normal: 400;
+        --font-weight-medium: 500;
+        --font-weight-semibold: 600;
+        --font-weight-bold: 700;
+
+        --line-height-tight: 1.2;
+        --line-height-normal: 1.4;
+        --line-height-relaxed: 1.6;
+
+        /* Spacing */
+        --spacing-xs: 0.25rem;   /* 4px */
+        --spacing-sm: 0.5rem;   /* 8px */
+        --spacing-md: 1rem;     /* 16px */
+        --spacing-lg: 1.5rem;   /* 24px */
+        --spacing-xl: 2rem;     /* 32px */
+        --spacing-2xl: 3rem;    /* 48px */
+        --spacing-3xl: 4rem;    /* 64px */
+
+        /* Border Radius */
+        --radius-sm: 4px;
+        --radius-md: 8px;
+        --radius-lg: 12px;
+        --radius-xl: 16px;
+        --radius-full: 9999px;
+
+        /* Shadows */
+        --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+        --shadow-md: 0 2px 4px rgba(0, 0, 0, 0.1);
+        --shadow-lg: 0 4px 8px rgba(0, 0, 0, 0.15);
+        --shadow-xl: 0 0 50px rgba(0, 0, 0, 0.3);
+
+        /* Transitions */
+        --transition-fast: 150ms ease-in-out;
+        --transition-base: 200ms ease-in-out;
+        --transition-slow: 300ms ease-in-out;
+
+        /* Z-index Scale */
+        --z-dropdown: 1000;
+        --z-sticky: 1020;
+        --z-fixed: 1030;
+        --z-modal-backdrop: 1040;
+        --z-modal: 1050;
+        --z-popover: 1060;
+        --z-tooltip: 1070;
       }
 
       *,

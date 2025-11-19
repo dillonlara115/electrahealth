@@ -1,0 +1,123 @@
+/* Custom Product Card Styles - Title and Price Above Image */
+
+/* Override default card behavior - convert ratio to flexbox */
+.product-card-wrapper .card--card .card__inner.ratio {
+  display: flex !important;
+  flex-direction: column !important;
+  position: relative !important;
+  padding-bottom: 0 !important;
+}
+
+.product-card-wrapper .card--card .card__inner.ratio:before {
+  display: none !important;
+}
+
+/* Override default hiding of card__information in card__inner */
+.card--card.card--media .card__inner .card__information {
+  display: block !important;
+}
+
+/* Position title and price at top */
+.card__content--top {
+  position: relative !important;
+  padding: 1.5rem 1.5rem 1rem 1.5rem;
+  background: transparent;
+  display: block !important;
+  order: 1 !important;
+  flex-shrink: 0;
+}
+
+/* Title styling */
+.card__content--top .card__heading {
+  margin: 0 0 0.8rem 0 !important;
+  font-size: 1.5rem;
+  line-height: 1.4;
+  font-weight: 400;
+  color: rgb(var(--color-foreground));
+}
+
+.card__content--top .card__heading a {
+  color: rgb(var(--color-foreground));
+  text-decoration: none;
+}
+
+.card__content--top .card__heading a:hover {
+  color: var(--color-primary, #17A2B8);
+}
+
+/* Price styling - larger and bold */
+.card__content--top .card-information {
+  margin-top: 0 !important;
+}
+
+.card__content--top .price {
+  font-size: 2.4rem !important;
+  font-weight: 700 !important;
+  color: rgb(var(--color-foreground));
+  margin: 0 0 1rem 0;
+}
+
+.card__content--top .price .price__regular,
+.card__content--top .price .price-item {
+  font-size: 2.4rem !important;
+  font-weight: 700 !important;
+  color: rgb(var(--color-foreground));
+}
+
+.card__content--top .price__container {
+  margin: 0;
+}
+
+/* Card media - maintain aspect ratio but allow it to display */
+.product-card-wrapper .card--card .card__inner .card__media {
+  position: relative !important;
+  order: 2 !important;
+  flex-shrink: 0;
+  margin: 0 !important;
+  width: 100% !important;
+  padding: 0 1.5rem 1.5rem 1.5rem;
+}
+
+.product-card-wrapper .card--card .card__inner .card__media .media {
+  position: relative !important;
+  border-radius: 0 !important;
+}
+
+.product-card-wrapper .card--card .card__inner .card__media .media img {
+  position: relative !important;
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Bottom content - hide duplicates */
+.product-card-wrapper .card__content:not(.card__content--top) {
+  display: none !important;
+}
+
+/* Card background - light gray like screenshot */
+.product-card-wrapper .card--card {
+  background: #f8f8f8 !important;
+}
+
+/* Mobile adjustments */
+@media screen and (max-width: 749px) {
+  .card__content--top {
+    padding: 1.2rem 1.2rem 0.8rem 1.2rem;
+  }
+  
+  .card__content--top .card__heading {
+    font-size: 1.3rem;
+  }
+  
+  .card__content--top .price,
+  .card__content--top .price .price__regular,
+  .card__content--top .price .price-item {
+    font-size: 2rem !important;
+  }
+  
+  .product-card-wrapper .card--card .card__inner .card__media {
+    padding: 0 1.2rem 1.2rem 1.2rem;
+  }
+}
+
