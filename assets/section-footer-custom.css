@@ -5,6 +5,7 @@
   background-color: var(--color-gray-900) ;
   color: var(--color-light) ;
   padding-bottom: 0 !important;
+  margin-top: 0 !important;
 }
 
 /* Footer links styling */
