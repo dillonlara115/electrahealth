@@ -10,6 +10,7 @@
   {% endif %}
 >
   {{ 'section-main-product.css' | asset_url | stylesheet_tag }}
+  {{ 'component-breadcrumb.css' | asset_url | stylesheet_tag }}
   {{ 'component-accordion.css' | asset_url | stylesheet_tag }}
   {{ 'component-price.css' | asset_url | stylesheet_tag }}
   {{ 'component-slider.css' | asset_url | stylesheet_tag }}
@@ -73,6 +74,10 @@
   {%- endif -%}
 
   {% assign variant_images = product.images | where: 'attached_to_variant?', true | map: 'src' %}
+  
+  {%- comment -%} Breadcrumb navigation {%- endcomment -%}
+  {% render 'breadcrumb', collection: collection, product: product %}
+  
   <div class="page-width">
     <div class="product product--{{ section.settings.media_size }} product--{{ section.settings.media_position }} product--{{ section.settings.gallery_layout }} product--mobile-{{ section.settings.mobile_thumbnails }} grid grid--1-col {% if product.media.size > 0 %}grid--2-col-tablet{% else %}product--no-media{% endif %}">
       <div class="grid__item product__media-wrapper">
@@ -98,12 +103,7 @@
                 </p>
               {%- when 'title' -%}
                 <div class="product__title" {{ block.shopify_attributes }}>
-                  <h1>{{ product.title | escape }}</h1>
-                  <a href="{{ product.url }}" class="product__title">
-                    <h2 class="h1">
-                      {{ product.title | escape }}
-                    </h2>
-                  </a>
+                  <h1 class="product__title-heading">{{ product.title | escape }}</h1>
                 </div>
               {%- when 'price' -%}
                 <div id="price-{{ section.id }}" role="status" {{ block.shopify_attributes }}>
@@ -477,6 +477,42 @@
 
               {%- when 'variant_picker' -%}
                 {% render 'product-variant-picker', product: product, block: block, product_form_id: product_form_id %}
+              {%- when 'product_attributes' -%}
+                <div class="product__attributes" {{ block.shopify_attributes }}>
+                  {%- if block.settings.show_part_number and product.selected_or_first_available_variant.sku != blank -%}
+                    <p class="product__attribute product__part-number">
+                      <span class="product__attribute-label">Part Number:</span>
+                      <span class="product__attribute-value">{{ product.selected_or_first_available_variant.sku }}</span>
+                    </p>
+                  {%- endif -%}
+                  {%- if block.settings.show_availability -%}
+                    <p class="product__attribute product__availability">
+                      <span class="product__attribute-label">Availability:</span>
+                      <span class="product__attribute-value">
+                        {%- if product.selected_or_first_available_variant.available -%}
+                          {{ block.settings.availability_text | default: 'In Stock' }}
+                        {%- else -%}
+                          {{ block.settings.unavailable_text | default: 'Out of Stock' }}
+                        {%- endif -%}
+                      </span>
+                    </p>
+                  {%- endif -%}
+                </div>
+              {%- when 'product_badges' -%}
+                {%- if block.settings.show_badges -%}
+                  <div class="product__badges" {{ block.shopify_attributes }}>
+                    {%- if block.settings.show_returns_badge -%}
+                      <span class="product__badge product__badge--returns">
+                        {{ block.settings.returns_badge_text | default: 'Free 30-day returns' }}
+                      </span>
+                    {%- endif -%}
+                    {%- if block.settings.show_shipping_badge -%}
+                      <span class="product__badge product__badge--shipping">
+                        {{ block.settings.shipping_badge_text | default: 'Ships in 3 days' }}
+                      </span>
+                    {%- endif -%}
+                  </div>
+                {%- endif -%}
               {%- when 'buy_buttons' -%}
                 {%- render 'buy-buttons',
                   block: block,
@@ -904,6 +940,74 @@
             }
           ],
           "default": "circle"
+        }
+      ]
+    },
+    {
+      "type": "product_badges",
+      "name": "Product Badges",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "show_badges",
+          "default": true,
+          "label": "Show badges"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_returns_badge",
+          "default": true,
+          "label": "Show returns badge"
+        },
+        {
+          "type": "text",
+          "id": "returns_badge_text",
+          "default": "Free 30-day returns",
+          "label": "Returns badge text"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_shipping_badge",
+          "default": true,
+          "label": "Show shipping badge"
+        },
+        {
+          "type": "text",
+          "id": "shipping_badge_text",
+          "default": "Ships in 3 days",
+          "label": "Shipping badge text"
+        }
+      ]
+    },
+    {
+      "type": "product_attributes",
+      "name": "Product Attributes",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "show_part_number",
+          "default": true,
+          "label": "Show part number"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_availability",
+          "default": true,
+          "label": "Show availability"
+        },
+        {
+          "type": "text",
+          "id": "availability_text",
+          "default": "Processing takes 7-14 Days to Ship",
+          "label": "Availability text (when in stock)"
+        },
+        {
+          "type": "text",
+          "id": "unavailable_text",
+          "default": "Out of Stock",
+          "label": "Unavailable text"
         }
       ]
     },

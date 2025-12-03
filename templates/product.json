@@ -12,6 +12,16 @@
     "main": {
       "type": "main-product",
       "blocks": {
+        "product_badges": {
+          "type": "product_badges",
+          "settings": {
+            "show_badges": true,
+            "show_returns_badge": true,
+            "returns_badge_text": "Free 30-day returns",
+            "show_shipping_badge": true,
+            "shipping_badge_text": "Ships in 3 days"
+          }
+        },
         "vendor": {
           "type": "text",
           "settings": {
@@ -45,6 +55,15 @@
           "type": "quantity_selector",
           "settings": {}
         },
+        "product_attributes": {
+          "type": "product_attributes",
+          "settings": {
+            "show_part_number": true,
+            "show_availability": true,
+            "availability_text": "Processing takes 7-14 Days to Ship",
+            "unavailable_text": "Out of Stock"
+          }
+        },
         "buy_buttons": {
           "type": "buy_buttons",
           "settings": {
@@ -60,12 +79,14 @@
         }
       },
       "block_order": [
+        "product_badges",
         "vendor",
         "title",
         "caption",
         "price",
         "variant_picker",
         "quantity_selector",
+        "product_attributes",
         "buy_buttons",
         "share"
       ],

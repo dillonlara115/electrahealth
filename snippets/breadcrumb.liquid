@@ -1,0 +1,19 @@
+<nav class="breadcrumb" aria-label="Breadcrumb">
+  <div class="page-width">
+    <p class="breadcrumb__list">
+      <a href="{{ routes.root_url }}">Home</a>
+      {%- if collection -%}
+        / <a href="{{ collection.url }}">{{ collection.title }}</a>
+      {%- elsif product.collections.size > 0 -%}
+        {%- assign first_collection = product.collections.first -%}
+        / <a href="{{ first_collection.url }}">Products</a>
+      {%- else -%}
+        / <a href="{{ routes.collections_url }}">Products</a>
+      {%- endif -%}
+      {%- if product -%}
+        / {{ product.title | escape }}
+      {%- endif -%}
+    </p>
+  </div>
+</nav>
+

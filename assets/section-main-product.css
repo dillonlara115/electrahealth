@@ -19,6 +19,16 @@ product-info {
   padding-left: 0;
 }
 
+.product__media-wrapper .product__media-list {
+  border-radius: 1.2rem;
+  overflow: hidden;
+}
+
+.product__media-wrapper .product__media-item {
+  border-radius: 1.2rem;
+  overflow: hidden;
+}
+
 @media screen and (min-width: 750px) {
   .product__column-sticky {
     display: block;
@@ -254,6 +264,18 @@ a.product__text {
   margin: 0;
 }
 
+.product__title-heading {
+  font-size: 2rem;
+  line-height: 1.2;
+  font-weight: 600;
+}
+
+@media screen and (min-width: 750px) {
+  .product__title-heading {
+    font-size: 2.4rem;
+  }
+}
+
 .product__title > a {
   display: none;
 }
@@ -288,9 +310,20 @@ a.product__text {
 }
 
 @media screen and (min-width: 750px) {
+.product__info-container {
+  max-width: 60rem;
+  border-radius: 1.2rem;
+  padding: 2rem;
+  background-color: rgb(var(--color-background));
+  border: 0.1rem solid rgba(var(--color-foreground), 0.08);
+  box-shadow: 0 0.1rem 0.3rem rgba(var(--color-foreground), 0.05);
+}
+
+@media screen and (min-width: 750px) {
   .product__info-container {
-    max-width: 60rem;
+    padding: 2.5rem;
   }
+}
 
   .product__info-container .price--on-sale .price-item--regular {
     font-size: 1.6rem;
@@ -1210,6 +1243,55 @@ a.product__text {
 
 .product__inventory .icon-inventory-status circle:first-of-type {
   opacity: .3;
+}
+
+/* Product badges */
+.product__badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+  margin-bottom: 1.5rem;
+}
+
+.product__badge {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  background-color: rgba(var(--color-foreground), 0.08);
+  border-radius: 0.8rem;
+  font-size: 1.2rem;
+  line-height: 1.4;
+  color: rgba(var(--color-foreground), 0.75);
+  font-weight: 400;
+  border: 0.1rem solid rgba(var(--color-foreground), 0.1);
+}
+
+.product__badge--returns,
+.product__badge--shipping {
+  background-color: rgba(var(--color-foreground), 0.08);
+}
+
+/* Product attributes */
+.product__attributes {
+  margin-bottom: 1.5rem;
+  padding: 1.5rem 0;
+  border-top: 0.1rem solid rgba(var(--color-foreground), 0.1);
+  border-bottom: 0.1rem solid rgba(var(--color-foreground), 0.1);
+}
+
+.product__attribute {
+  margin: 0.8rem 0;
+  font-size: 1.4rem;
+  line-height: 1.5;
+  color: rgba(var(--color-foreground), 0.8);
+}
+
+.product__attribute-label {
+  font-weight: 600;
+  margin-right: 0.5rem;
+}
+
+.product__attribute-value {
+  color: rgba(var(--color-foreground), 0.9);
 }
 
 /* Icon with text */
