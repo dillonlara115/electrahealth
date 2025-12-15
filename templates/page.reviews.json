@@ -1,0 +1,135 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "settings": {
+        "padding_top": 28,
+        "padding_bottom": 0
+      }
+    },
+    "reviews_section": {
+      "type": "reviews-page",
+      "blocks": {
+        "review_1": {
+          "type": "review",
+          "settings": {
+            "rating": 5,
+            "review_text": "The delivery was fast. I have not used the meter yet but it appears to be of good quality. I am happy with my purchase.",
+            "customer_name": "Roy B.",
+            "date": "August 2023",
+            "product_name": "EMF Meter",
+            "verified_purchase": true
+          }
+        },
+        "review_2": {
+          "type": "review",
+          "settings": {
+            "rating": 4,
+            "review_text": "Product arrived quickly. Have not had a chance to verify how accurate it is however it seems to be working perfectly. Would recommend.",
+            "customer_name": "David",
+            "date": "July 2023",
+            "product_name": "Dirty Electricity Meter",
+            "verified_purchase": true
+          }
+        },
+        "review_3": {
+          "type": "review",
+          "settings": {
+            "rating": 5,
+            "review_text": "I bought the Stetzerizer filters and the microsurge meter. I was skeptical at first but after installing them the readings dropped significantly. I sleep better now.",
+            "customer_name": "Allan",
+            "date": "June 2023",
+            "product_name": "Stetzerizer Filters",
+            "verified_purchase": true
+          }
+        },
+        "review_4": {
+          "type": "review",
+          "settings": {
+            "rating": 5,
+            "review_text": "The meter is easy to use and helped me find the sources of dirty electricity in my home. Great investment.",
+            "customer_name": "John",
+            "date": "May 2023",
+            "product_name": "Microsurge Meter",
+            "verified_purchase": true
+          }
+        },
+        "review_5": {
+          "type": "review",
+          "settings": {
+            "rating": 5,
+            "review_text": "Item arrived on time and as described. Very happy with the purchase.",
+            "customer_name": "Michael S.",
+            "date": "April 2023",
+            "product_name": "",
+            "verified_purchase": true
+          }
+        },
+        "review_6": {
+          "type": "review",
+          "settings": {
+            "rating": 5,
+            "review_text": "Very helpful customer service when I called with questions. They guided me to the right product for my needs.",
+            "customer_name": "James L.",
+            "date": "February 2023",
+            "product_name": "",
+            "verified_purchase": true
+          }
+        },
+        "review_7": {
+          "type": "review",
+          "settings": {
+            "rating": 3,
+            "review_text": "Product is fine. Customer service and communication not so good.",
+            "customer_name": "Paul",
+            "date": "August 2023",
+            "product_name": "",
+            "verified_purchase": true
+          }
+        },
+        "review_8": {
+          "type": "review",
+          "settings": {
+            "rating": 5,
+            "review_text": "Excellent products and fast shipping. I've ordered multiple times and always had a good experience.",
+            "customer_name": "Mary K.",
+            "date": "July 2023",
+            "product_name": "Shielding Fabric",
+            "verified_purchase": true
+          }
+        }
+      },
+      "block_order": [
+        "review_1",
+        "review_2",
+        "review_3",
+        "review_4",
+        "review_5",
+        "review_6",
+        "review_7",
+        "review_8"
+      ],
+      "name": "Reviews",
+      "settings": {
+        "heading": "Customer Reviews",
+        "heading_size": "h1",
+        "description": "<p>See reviews our customers left on our products and services via Shopper Approved.</p>",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    }
+  },
+  "order": [
+    "main",
+    "reviews_section"
+  ]
+}

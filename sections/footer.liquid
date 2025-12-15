@@ -50,6 +50,9 @@
           {%- if section.settings.link_5_text != blank -%}
             <a href="{{ section.settings.link_5_url }}" class="footer-link">{{ section.settings.link_5_text }}</a>
           {%- endif -%}
+          {%- if section.settings.link_8_text != blank -%}
+            <a href="{{ section.settings.link_8_url }}" class="footer-link">{{ section.settings.link_8_text }}</a>
+          {%- endif -%}
         </div>
 
         {%- comment -%} Column 3 {%- endcomment -%}
@@ -67,6 +70,9 @@
           {%- endif -%}
           {%- if section.settings.link_7_text != blank -%}
             <a href="{{ section.settings.link_7_url }}" class="footer-link">{{ section.settings.link_7_text }}</a>
+          {%- endif -%}
+          {%- if section.settings.link_9_text != blank -%}
+            <a href="{{ section.settings.link_9_url }}" class="footer-link">{{ section.settings.link_9_text }}</a>
           {%- endif -%}
         </div>
 
@@ -151,6 +157,105 @@
 {% schema %}
 {
   "name": "Footer",
+  "blocks": [
+    {
+      "type": "@app"
+    },
+    {
+      "type": "link_list",
+      "name": "Menu",
+      "settings": [
+        {
+          "type": "inline_richtext",
+          "id": "heading",
+          "default": "Quick links",
+          "label": "Heading"
+        },
+        {
+          "type": "link_list",
+          "id": "menu",
+          "default": "footer",
+          "label": "Menu"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "name": "Text",
+      "settings": [
+        {
+          "type": "inline_richtext",
+          "id": "heading",
+          "default": "Heading",
+          "label": "Heading"
+        },
+        {
+          "type": "richtext",
+          "id": "subtext",
+          "default": "<p>Share contact information, store details, and brand content with your customers.</p>",
+          "label": "Subtext"
+        }
+      ]
+    },
+    {
+      "type": "brand_information",
+      "name": "Brand Information",
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "Brand information is managed in [Theme Settings](/admin/themes/current/editor?context=theme&category=brand%20information)"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_social",
+          "default": true,
+          "label": "Show social media icons",
+          "info": "Manage social accounts in [Theme Settings](/admin/themes/current/editor?context=theme&category=social%20media)"
+        }
+      ]
+    },
+    {
+      "type": "image",
+      "name": "Image",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "range",
+          "id": "image_width",
+          "min": 50,
+          "max": 550,
+          "step": 5,
+          "unit": "px",
+          "label": "Width",
+          "default": 100
+        },
+        {
+          "type": "select",
+          "id": "alignment",
+          "label": "Alignment",
+          "options": [
+            {
+              "value": "",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            }
+          ],
+          "default": "center"
+        }
+      ]
+    }
+  ],
   "settings": [
     {
       "type": "header",
@@ -216,6 +321,17 @@
       "label": "Link 5 URL"
     },
     {
+      "type": "text",
+      "id": "link_8_text",
+      "label": "Link 8 Text",
+      "default": "Videos"
+    },
+    {
+      "type": "url",
+      "id": "link_8_url",
+      "label": "Link 8 URL"
+    },
+    {
       "type": "header",
       "content": "Column 3 Links"
     },
@@ -246,6 +362,17 @@
       "type": "url",
       "id": "link_7_url",
       "label": "Link 7 URL"
+    },
+    {
+      "type": "text",
+      "id": "link_9_text",
+      "label": "Link 9 Text",
+      "default": "Blog"
+    },
+    {
+      "type": "url",
+      "id": "link_9_url",
+      "label": "Link 9 URL"
     },
     {
       "type": "header",

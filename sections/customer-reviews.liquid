@@ -1,0 +1,269 @@
+{{ 'section-customer-reviews.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+
+  .customer-reviews-{{ section.id }} {
+    {% if section.settings.background_image != blank %}
+      background-image: url('{{ section.settings.background_image | image_url: width: 1920 }}');
+      background-size: auto;
+      background-position: center;
+      background-repeat: repeat;
+    {% endif %}
+    {% if section.settings.background_color != blank %}
+      background-color: {{ section.settings.background_color }};
+    {% endif %}
+    position: relative;
+  }
+
+  .customer-reviews-{{ section.id }}::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: {{ section.settings.overlay_color }};
+    opacity: {{ section.settings.overlay_opacity | divided_by: 100.0 }};
+    pointer-events: none;
+  }
+{%- endstyle -%}
+
+<section class="customer-reviews customer-reviews-{{ section.id }} section-{{ section.id }}-padding">
+  <div class="page-width">
+    <div class="customer-reviews-container">
+      {%- if section.settings.heading != blank -%}
+        <div class="customer-reviews-header">
+          <h2 class="customer-reviews-heading {{ section.settings.heading_size }}">
+            {{ section.settings.heading }}
+          </h2>
+        </div>
+      {%- endif -%}
+
+      {%- if section.blocks.size > 0 -%}
+        <div class="customer-reviews-grid">
+          {%- for block in section.blocks -%}
+            {%- case block.type -%}
+              {%- when 'review' -%}
+                <div class="customer-review-card" {{ block.shopify_attributes }}>
+                  <div class="customer-review-content">
+                    {%- if block.settings.rating > 0 -%}
+                      <div class="customer-review-rating">
+                        {%- for i in (1..5) -%}
+                          {%- if i <= block.settings.rating -%}
+                            <svg class="star-icon star-filled" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                              <path d="M10 0L12.2451 6.90983H19.5106L13.6327 11.1803L15.8779 18.0902L10 13.8197L4.12215 18.0902L6.36729 11.1803L0.489435 6.90983H7.75486L10 0Z" fill="currentColor"/>
+                            </svg>
+                          {%- else -%}
+                            <svg class="star-icon star-empty" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                              <path d="M10 0L12.2451 6.90983H19.5106L13.6327 11.1803L15.8779 18.0902L10 13.8197L4.12215 18.0902L6.36729 11.1803L0.489435 6.90983H7.75486L10 0Z" fill="none" stroke="currentColor" stroke-width="1"/>
+                            </svg>
+                          {%- endif -%}
+                        {%- endfor -%}
+                      </div>
+                    {%- endif -%}
+
+                    {%- if block.settings.review_text != blank -%}
+                      <div class="customer-review-text">
+                        <p>{{ block.settings.review_text }}</p>
+                      </div>
+                    {%- endif -%}
+
+                    <div class="customer-review-footer">
+                      {%- if block.settings.customer_name != blank -%}
+                        <div class="customer-review-name">
+                          <strong>{{ block.settings.customer_name }}</strong>
+                        </div>
+                      {%- endif -%}
+                      {%- if block.settings.product_name != blank -%}
+                        <div class="customer-review-product">
+                          {{ block.settings.product_name }}
+                        </div>
+                      {%- endif -%}
+                    </div>
+                  </div>
+                </div>
+            {%- endcase -%}
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Customer Reviews",
+  "tag": "section",
+  "class": "section",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "What Our Customers Say"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "label": "Heading size",
+      "options": [
+        {
+          "value": "h2",
+          "label": "Small"
+        },
+        {
+          "value": "h1",
+          "label": "Medium"
+        },
+        {
+          "value": "h0",
+          "label": "Large"
+        }
+      ],
+      "default": "h1"
+    },
+    {
+      "type": "header",
+      "content": "Background"
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Background image"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#f8f8f8"
+    },
+    {
+      "type": "color",
+      "id": "overlay_color",
+      "label": "Overlay color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "label": "Overlay opacity",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Section padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 36
+    }
+  ],
+  "blocks": [
+    {
+      "type": "review",
+      "name": "Review",
+      "settings": [
+        {
+          "type": "range",
+          "id": "rating",
+          "min": 0,
+          "max": 5,
+          "step": 1,
+          "label": "Rating",
+          "default": 5,
+          "info": "Set to 0 to hide stars"
+        },
+        {
+          "type": "textarea",
+          "id": "review_text",
+          "label": "Review text",
+          "default": "This product has made a real difference in my home. Highly recommend!"
+        },
+        {
+          "type": "text",
+          "id": "customer_name",
+          "label": "Customer name",
+          "default": "John D."
+        },
+        {
+          "type": "text",
+          "id": "product_name",
+          "label": "Product or service",
+          "default": "EMF Meter",
+          "info": "Optional - leave blank to hide"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Customer Reviews",
+      "blocks": [
+        {
+          "type": "review",
+          "settings": {
+            "rating": 5,
+            "review_text": "Excellent service and fast shipping. The products work exactly as described.",
+            "customer_name": "Sarah M.",
+            "product_name": "Stetzerizer Filters"
+          }
+        },
+        {
+          "type": "review",
+          "settings": {
+            "rating": 5,
+            "review_text": "Great customer support and quality products. Very satisfied with my purchase.",
+            "customer_name": "Michael R.",
+            "product_name": "EMF Meter"
+          }
+        },
+        {
+          "type": "review",
+          "settings": {
+            "rating": 5,
+            "review_text": "These products have helped reduce EMF exposure in our home significantly.",
+            "customer_name": "Jennifer L.",
+            "product_name": "Shielding Products"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+
+

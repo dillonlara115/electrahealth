@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "main": {
@@ -6,9 +15,98 @@
         "padding_top": 28,
         "padding_bottom": 28
       }
+    },
+    "video_gallery_R4CKeF": {
+      "type": "video-gallery",
+      "blocks": {
+        "video_jy3CmD": {
+          "type": "video",
+          "settings": {
+            "video_url": "https://youtu.be/vbebpRvwd8k?si=kcBIyMdxSTqc0Gh7",
+            "title": "",
+            "description": "<p><strong>Dr. Magda Havas</strong> of Trent University explains what dirty electricity is and shows the effectiveness of <a href=\"https://electrahealth.myshopify.com/pages/product.asp?itemid=9\">Stetzerizer filters</a><br/> available in our store.  Please note the effects of compact fluorescent (curly) lightbulbs.  In all cases we recommend the use of old-fashioned incandescent lightbulbs or the new LED bulbs instead of curly CFL <br/>bulbs.  The Stetzerizer filters can greatly <strong>reduce exposure</strong> from these bulbs, as shown at the end of this video.  However, we <br/>believe the health risks associated with curly CFL bulbs are too great and it's much safer to remove any CFL bulbs you have in your buildings.</p>"
+          }
+        },
+        "video_yPq6aP": {
+          "type": "video",
+          "settings": {
+            "video_url": "https://youtu.be/A55081TOlbQ?si=OJ0lSXmTh4Mlr1Nj",
+            "title": "",
+            "description": "<p>Canadian TV show \"16:9\" shows <strong>dirty power</strong> and Dr. Magda Havas using the <a href=\"https://electrahealth.myshopify.com/pages/product.asp?itemid=10\">Stetzerizer Microsurge Meter</a> available in our store.  You can see how old-fashioned incandescent <br/>light bulbs do not produce any dirty electricity.  The new mercury-filled curly CFL (compact fluorescent lightbulb) made overseas contain electronics that pulse the electricity very rapidly and create high frequency radio frequencies associated with many health problems.</p>"
+          }
+        },
+        "video_bHCmAG": {
+          "type": "video",
+          "settings": {
+            "video_url": "https://youtu.be/WOwyn-xVXV4?si=ikgvI82dbmkSSPSm",
+            "title": "",
+            "description": "<p>Another clip from the same 16:9 episode that shows a home health specialist using the <a href=\"product.asp?itemid=10\">Microsurge Meter</a> and identifying dirty electricity in concerned parent's home.  You can see how having ANYTHING plugged-in near your bed is not a good idea, as the wire you plug into the wall becomes an antenna and carries the dirty electricity.</p>"
+          }
+        },
+        "video_aywBHh": {
+          "type": "video",
+          "settings": {
+            "video_url": "https://youtu.be/KN7VetsCR2I?si=NegL4iA6ybAO2BlV",
+            "title": "WiFi in schools proven dangerous",
+            "description": ""
+          }
+        },
+        "video_QLEhJk": {
+          "type": "video",
+          "settings": {
+            "video_url": "https://youtu.be/gJcM6RZwyfA?si=xcZxx2O1Ea4w7Nej",
+            "title": "",
+            "description": "<p>Dr. Magda Havas from Trent University - a pioneering researcher into the health effects of non-ionizing radiation (radiowaves, microwaves, electricity, etc) - shows a link between <strong>unstable blood sugar levels</strong> and <strong>dirty electricity</strong>.  The solutions to <strong>dirty electricity</strong> are eliminating devices like CFL bulbs, dimmer switches, and other devices in the home that can be changed, as well as installing the Stetzerizer Filters available in our store.</p>"
+          }
+        },
+        "video_H6atR8": {
+          "type": "video",
+          "settings": {
+            "video_url": "https://youtu.be/xdtIPb3Veuw?si=vmZLRvQx-60U8Px1",
+            "title": "Multiple Sclerosis & Dirty Electricity",
+            "description": "<p>Dr. Havas shows how many patients suffering from Multiple Sclerosis can see relief or even recovery by becoming aware of <strong>dirty electricity</strong> and cleaning up their environment with <a href=\"product.asp?itemid=9\">Stetzerizer filters</a>.</p>"
+          }
+        },
+        "video_rAPehp": {
+          "type": "video",
+          "settings": {
+            "video_url": "https://youtu.be/FU7h9pZ0REs?si=z9t0sjdaaV8RPYDC",
+            "title": "Beyond Coincidence - The Perils of Electrical Pollution - Part 1",
+            "description": ""
+          }
+        },
+        "video_JBBYVQ": {
+          "type": "video",
+          "settings": {
+            "video_url": "https://youtu.be/OiGHk48mivA?si=eUUvzmanlYjSL_3X",
+            "title": "Beyond Coincidence - The Perils of Electrical Pollution - Part 2",
+            "description": ""
+          }
+        }
+      },
+      "block_order": [
+        "video_jy3CmD",
+        "video_yPq6aP",
+        "video_bHCmAG",
+        "video_aywBHh",
+        "video_QLEhJk",
+        "video_H6atR8",
+        "video_rAPehp",
+        "video_JBBYVQ"
+      ],
+      "name": "Video Gallery",
+      "settings": {
+        "heading": "",
+        "heading_size": "h1",
+        "description": "",
+        "color_scheme": "",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
     }
   },
   "order": [
-    "main"
+    "main",
+    "video_gallery_R4CKeF"
   ]
 }

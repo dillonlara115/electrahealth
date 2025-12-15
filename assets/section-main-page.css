@@ -2,14 +2,40 @@
   margin-top: 0;
 }
 
-.main-page-title {
-  margin-bottom: 3rem;
+.main-page-header-wrapper {
+  width: 100%;
+  box-shadow: inset 0 0 0 100vw rgba(0,0,0,0.5);
+  background-repeat: repeat;
+  background-position: center;
+  margin-bottom: 4rem;
 }
 
 @media screen and (min-width: 750px) {
-  .main-page-title {
-    margin-bottom: 4rem;
+  .main-page-header-wrapper {
+    margin-bottom: 5rem;
   }
+}
+
+.main-page-header {
+  padding: 3rem 2.5rem;
+  text-align: center;
+}
+
+@media screen and (min-width: 750px) {
+  .main-page-header {
+    padding: 4rem 3.5rem;
+  }
+}
+
+@media screen and (min-width: 990px) {
+  .main-page-header {
+    padding: 5rem 4.5rem;
+  }
+}
+
+.main-page-title {
+  margin: 0;
+  color: rgba(var(--color-foreground), 0.9);
 }
 
 .page-placeholder-wrapper {

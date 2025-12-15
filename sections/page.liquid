@@ -12,17 +12,45 @@
       padding-bottom: {{ section.settings.padding_bottom }}px;
     }
   }
+
+  .main-page-header-wrapper {
+    background-image: url('{{ "textures/graphy.webp" | asset_url }}');
+    position: relative;
+  }
+
+  .main-page-header-wrapper::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(255, 255, 255, 0.85);
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .main-page-header-wrapper > * {
+    position: relative;
+    z-index: 1;
+  }
 {%- endstyle -%}
 
-<div class="color-{{ section.settings.color_scheme }} gradient">
-  <div class="page-width page-width--narrow section-{{ section.id }}-padding">
-    <h2 class="page-title {{ section.settings.heading_size }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
-      {%- if section.settings.page.title != blank -%}
-        {{ section.settings.page.title | escape }}
-      {%- else -%}
-        {{ 'sections.page.title' | t }}
-      {%- endif -%}
-    </h2>
+<div class="color-{{ section.settings.color_scheme }} gradient section-{{ section.id }}-padding">
+  <div class="main-page-header-wrapper{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}">
+    <div class="page-width page-width--narrow">
+      <div class="main-page-header">
+        <h2 class="page-title {{ section.settings.heading_size }}">
+          {%- if section.settings.page.title != blank -%}
+            {{ section.settings.page.title | escape }}
+          {%- else -%}
+            {{ 'sections.page.title' | t }}
+          {%- endif -%}
+        </h2>
+      </div>
+    </div>
+  </div>
+  <div class="page-width page-width--narrow">
     <div class="rte{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
       {%- if section.settings.page.content != blank -%}
         {{ section.settings.page.content }}

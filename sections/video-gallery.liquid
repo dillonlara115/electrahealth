@@ -1,0 +1,219 @@
+{{ 'section-video-gallery.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+<div class="video-gallery color-{{ section.settings.color_scheme }} gradient section-{{ section.id }}-padding">
+  <div class="page-width">
+    {%- unless section.settings.heading == blank -%}
+      <div class="video-gallery__header{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}">
+        <h2 class="title inline-richtext {{ section.settings.heading_size }}">{{ section.settings.heading }}</h2>
+        {%- if section.settings.description != blank -%}
+          <div class="video-gallery__description rte">
+            {{ section.settings.description }}
+          </div>
+        {%- endif -%}
+      </div>
+    {%- endunless -%}
+
+    <div class="video-gallery__items">
+      {%- for block in section.blocks -%}
+        {%- case block.type -%}
+          {%- when 'video' -%}
+            <div
+              class="video-gallery__item-wrapper{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
+              {{ block.shopify_attributes }}
+              {% if settings.animations_reveal_on_scroll %}
+                data-cascade
+                style="--animation-order: {{ forloop.index }};"
+              {% endif %}
+            >
+              <div class="video-gallery__item">
+                {%- if block.settings.video_url != blank -%}
+                  {%- liquid
+                    assign video_id = block.settings.video_url.id
+                    assign video_type = block.settings.video_url.type
+                  -%}
+                  
+                  <div class="video-gallery__video-wrapper">
+                    {%- if video_type == 'youtube' -%}
+                      <div class="video-gallery__video">
+                        <iframe
+                          src="https://www.youtube.com/embed/{{ video_id }}"
+                          class="js-youtube"
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                          allowfullscreen
+                          title="{{ block.settings.title | default: 'Video' | escape }}"
+                          loading="lazy"
+                        ></iframe>
+                      </div>
+                    {%- elsif video_type == 'vimeo' -%}
+                      <div class="video-gallery__video">
+                        <iframe
+                          src="https://player.vimeo.com/video/{{ video_id }}"
+                          class="js-vimeo"
+                          allow="autoplay; fullscreen; picture-in-picture"
+                          allowfullscreen
+                          title="{{ block.settings.title | default: 'Video' | escape }}"
+                          loading="lazy"
+                        ></iframe>
+                      </div>
+                    {%- endif -%}
+                  </div>
+                {%- endif -%}
+
+                {%- if block.settings.title != blank or block.settings.description != blank -%}
+                  <div class="video-gallery__content">
+                    {%- if block.settings.title != blank -%}
+                      <h3 class="video-gallery__item-title">{{ block.settings.title }}</h3>
+                    {%- endif -%}
+                    
+                    {%- if block.settings.description != blank -%}
+                      <div class="video-gallery__item-description rte">
+                        {{ block.settings.description }}
+                      </div>
+                    {%- endif -%}
+                  </div>
+                {%- endif -%}
+              </div>
+            </div>
+          {%- when 'divider' -%}
+            <div class="video-gallery__divider" {{ block.shopify_attributes }}></div>
+        {%- endcase -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Video Gallery",
+  "tag": "section",
+  "class": "section",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Video Gallery"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "options": [
+        {
+          "value": "h2",
+          "label": "Small"
+        },
+        {
+          "value": "h1",
+          "label": "Medium"
+        },
+        {
+          "value": "h0",
+          "label": "Large"
+        }
+      ],
+      "default": "h1",
+      "label": "Heading size"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "Section padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding bottom",
+      "default": 36
+    }
+  ],
+  "blocks": [
+    {
+      "type": "video",
+      "name": "Video",
+      "settings": [
+        {
+          "type": "video_url",
+          "id": "video_url",
+          "accept": ["youtube", "vimeo"],
+          "label": "Video URL",
+          "info": "Paste a YouTube or Vimeo URL"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Video title",
+          "info": "Optional title displayed above the video"
+        },
+        {
+          "type": "richtext",
+          "id": "description",
+          "label": "Description",
+          "info": "Description text displayed below the video. You can add product links using the link button in the editor."
+        }
+      ]
+    },
+    {
+      "type": "divider",
+      "name": "Divider"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Video Gallery",
+      "blocks": [
+        {
+          "type": "video"
+        },
+        {
+          "type": "video"
+        },
+        {
+          "type": "video"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+

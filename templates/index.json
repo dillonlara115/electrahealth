@@ -229,6 +229,53 @@
         "padding_top": 36,
         "padding_bottom": 36
       }
+    },
+    "customer_reviews": {
+      "type": "customer-reviews",
+      "blocks": {
+        "review_1": {
+          "type": "review",
+          "settings": {
+            "rating": 5,
+            "review_text": "Excellent service and fast shipping. The products work exactly as described.",
+            "customer_name": "Sarah M.",
+            "product_name": "Stetzerizer Filters"
+          }
+        },
+        "review_2": {
+          "type": "review",
+          "settings": {
+            "rating": 5,
+            "review_text": "Great customer support and quality products. Very satisfied with my purchase.",
+            "customer_name": "Michael R.",
+            "product_name": "EMF Meter"
+          }
+        },
+        "review_3": {
+          "type": "review",
+          "settings": {
+            "rating": 5,
+            "review_text": "These products have helped reduce EMF exposure in our home significantly.",
+            "customer_name": "Jennifer L.",
+            "product_name": "Shielding Products"
+          }
+        }
+      },
+      "block_order": [
+        "review_1",
+        "review_2",
+        "review_3"
+      ],
+      "name": "Customer Reviews",
+      "settings": {
+        "heading": "What Our Customers Say",
+        "heading_size": "h1",
+        "background_color": "#f8f8f8",
+        "overlay_color": "#ffffff",
+        "overlay_opacity": 0,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
     }
   },
   "order": [
@@ -236,6 +283,7 @@
     "rich_text",
     "featured_categories_VHpCFM",
     "featured_collection",
-    "featured_brands_GM6jyT"
+    "featured_brands_GM6jyT",
+    "customer_reviews"
   ]
 }

@@ -16,7 +16,7 @@
   .featured-brands-{{ section.id }} {
     {% if section.settings.background_image != blank %}
       background-image: url('{{ section.settings.background_image | image_url: width: 1920 }}');
-      background-size: cover;
+      background-size: auto;
       background-position: center;
       background-repeat: repeat;
     {% endif %}

@@ -1,0 +1,260 @@
+{{ 'section-reviews-page.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+<div class="reviews-page section-{{ section.id }}-padding">
+  <div class="page-width">
+    {%- if section.settings.heading != blank -%}
+      <div class="reviews-page-header">
+        <h1 class="reviews-page-heading {{ section.settings.heading_size }}">
+          {{ section.settings.heading }}
+        </h1>
+        {%- if section.settings.description != blank -%}
+          <div class="reviews-page-description">
+            {{ section.settings.description }}
+          </div>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    {%- if section.blocks.size > 0 -%}
+      <div class="reviews-list">
+        {%- for block in section.blocks -%}
+          {%- case block.type -%}
+            {%- when 'review' -%}
+              <article class="review-item" {{ block.shopify_attributes }}>
+                <div class="review-item-header">
+                  {%- if block.settings.rating > 0 -%}
+                    <div class="review-rating">
+                      {%- for i in (1..5) -%}
+                        {%- if i <= block.settings.rating -%}
+                          <svg class="star-icon star-filled" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M10 0L12.2451 6.90983H19.5106L13.6327 11.1803L15.8779 18.0902L10 13.8197L4.12215 18.0902L6.36729 11.1803L0.489435 6.90983H7.75486L10 0Z" fill="currentColor"/>
+                          </svg>
+                        {%- else -%}
+                          <svg class="star-icon star-empty" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M10 0L12.2451 6.90983H19.5106L13.6327 11.1803L15.8779 18.0902L10 13.8197L4.12215 18.0902L6.36729 11.1803L0.489435 6.90983H7.75486L10 0Z" fill="none" stroke="currentColor" stroke-width="1"/>
+                          </svg>
+                        {%- endif -%}
+                      {%- endfor -%}
+                    </div>
+                  {%- endif -%}
+                  
+                  <div class="review-meta">
+                    {%- if block.settings.customer_name != blank -%}
+                      <div class="review-author">
+                        <strong>{{ block.settings.customer_name }}</strong>
+                      </div>
+                    {%- endif -%}
+                    {%- if block.settings.date != blank -%}
+                      <div class="review-date">
+                        {{ block.settings.date }}
+                      </div>
+                    {%- endif -%}
+                  </div>
+                </div>
+
+                {%- if block.settings.product_name != blank -%}
+                  <div class="review-product">
+                    Product: {{ block.settings.product_name }}
+                  </div>
+                {%- endif -%}
+
+                {%- if block.settings.review_text != blank -%}
+                  <div class="review-content">
+                    {{ block.settings.review_text }}
+                  </div>
+                {%- endif -%}
+
+                {%- if block.settings.verified_purchase -%}
+                  <div class="review-badge">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M8 0L9.79611 5.52786L15.6085 5.52786L10.9062 8.94427L12.7023 14.4721L8 11.0557L3.29772 14.4721L5.09383 8.94427L0.391548 5.52786L6.20389 5.52786L8 0Z" fill="currentColor"/>
+                    </svg>
+                    Verified Purchase
+                  </div>
+                {%- endif -%}
+              </article>
+          {%- endcase -%}
+        {%- endfor -%}
+      </div>
+    {%- else -%}
+      <div class="reviews-empty">
+        <p>No reviews available at this time.</p>
+      </div>
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Reviews Page",
+  "tag": "section",
+  "class": "section",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Customer Reviews"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "label": "Heading size",
+      "options": [
+        {
+          "value": "h2",
+          "label": "Small"
+        },
+        {
+          "value": "h1",
+          "label": "Medium"
+        },
+        {
+          "value": "h0",
+          "label": "Large"
+        }
+      ],
+      "default": "h1"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description",
+      "default": "<p>See reviews our customers left on our products and services.</p>"
+    },
+    {
+      "type": "header",
+      "content": "Section padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 36
+    }
+  ],
+  "blocks": [
+    {
+      "type": "review",
+      "name": "Review",
+      "settings": [
+        {
+          "type": "range",
+          "id": "rating",
+          "min": 0,
+          "max": 5,
+          "step": 1,
+          "label": "Rating",
+          "default": 5,
+          "info": "Set to 0 to hide stars"
+        },
+        {
+          "type": "textarea",
+          "id": "review_text",
+          "label": "Review text",
+          "default": "This product has made a real difference in my home. Highly recommend!"
+        },
+        {
+          "type": "text",
+          "id": "customer_name",
+          "label": "Customer name",
+          "default": "John D."
+        },
+        {
+          "type": "text",
+          "id": "date",
+          "label": "Date",
+          "default": "January 2024",
+          "info": "Optional - leave blank to hide"
+        },
+        {
+          "type": "text",
+          "id": "product_name",
+          "label": "Product or service",
+          "default": "EMF Meter",
+          "info": "Optional - leave blank to hide"
+        },
+        {
+          "type": "checkbox",
+          "id": "verified_purchase",
+          "label": "Verified purchase",
+          "default": false
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Reviews Page",
+      "blocks": [
+        {
+          "type": "review",
+          "settings": {
+            "rating": 5,
+            "review_text": "Excellent service and fast shipping. The products work exactly as described.",
+            "customer_name": "Sarah M.",
+            "date": "January 2024",
+            "product_name": "Stetzerizer Filters",
+            "verified_purchase": true
+          }
+        },
+        {
+          "type": "review",
+          "settings": {
+            "rating": 5,
+            "review_text": "Great customer support and quality products. Very satisfied with my purchase.",
+            "customer_name": "Michael R.",
+            "date": "December 2023",
+            "product_name": "EMF Meter",
+            "verified_purchase": true
+          }
+        },
+        {
+          "type": "review",
+          "settings": {
+            "rating": 5,
+            "review_text": "These products have helped reduce EMF exposure in our home significantly.",
+            "customer_name": "Jennifer L.",
+            "date": "November 2023",
+            "product_name": "Shielding Products",
+            "verified_purchase": true
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+
+
