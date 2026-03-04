@@ -1,0 +1,132 @@
+{% comment %}
+  Top bar with pipe-separated navigation links.
+  Matches the electrahealth.com header style.
+{% endcomment %}
+
+{%- if section.settings.menu != blank and section.settings.menu.links.size > 0 -%}
+  <div
+    class="top-bar color-{{ section.settings.color_scheme }} gradient{% if section.settings.show_line_separator %} top-bar--border-bottom{% endif %}"
+    role="navigation"
+    aria-label="{{ 'sections.header.menu' | t }}"
+  >
+    <div class="page-width top-bar__inner">
+      <ul class="top-bar__list list-menu list-menu--inline" role="list">
+        {%- for link in section.settings.menu.links -%}
+          <li class="top-bar__item">
+            <a
+              href="{{ link.url }}"
+              class="top-bar__link link link--text focus-inset{% if link.current %} top-bar__link--active{% endif %}"
+              {% if link.current %}
+                aria-current="page"
+              {% endif %}
+            >
+              {{ link.title | escape }}
+            </a>
+          </li>
+        {%- endfor -%}
+      </ul>
+    </div>
+  </div>
+
+  <style>
+    .top-bar {
+      padding: 0.6rem 0;
+      font-size: 1.3rem;
+    }
+
+    .top-bar__inner {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .top-bar__list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0;
+      row-gap: 0.4rem;
+    }
+
+    .top-bar__item {
+      display: inline-flex;
+      align-items: center;
+    }
+
+    .top-bar__item:not(:last-child)::after {
+      content: '|';
+      margin: 0 1rem;
+      color: rgba(var(--color-foreground), 0.5);
+      font-weight: 400;
+      pointer-events: none;
+    }
+
+    .top-bar__link {
+      text-decoration: none;
+      color: rgb(var(--color-foreground));
+      transition: opacity 0.2s ease;
+    }
+
+    .top-bar__link:hover {
+      opacity: 0.8;
+    }
+
+    .top-bar__link--active {
+      font-weight: 600;
+    }
+
+    .top-bar--border-bottom {
+      border-bottom: 0.1rem solid rgba(var(--color-foreground), 0.08);
+    }
+
+    @media screen and (max-width: 749px) {
+      .top-bar {
+        font-size: 1.2rem;
+        padding: 0.5rem 0;
+      }
+
+      .top-bar__item:not(:last-child)::after {
+        margin: 0 0.6rem;
+      }
+    }
+  </style>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Top bar links",
+  "class": "top-bar-section",
+  "enabled_on": {
+    "groups": ["header"]
+  },
+  "settings": [
+    {
+      "type": "link_list",
+      "id": "menu",
+      "default": "main-menu",
+      "label": "Menu",
+      "info": "Create a menu in Online Store > Navigation (e.g. 'Top bar') with links like Home, About Us, Research, Videos, My Account, Support, Contact Us."
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.all.colors.label",
+      "default": "scheme-1"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_line_separator",
+      "default": true,
+      "label": "Show line below"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Top bar links"
+    }
+  ]
+}
+{% endschema %}

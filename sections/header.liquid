@@ -70,6 +70,41 @@
       padding-top: 0.5rem;
     }
   }
+
+  .header-nav-wrapper {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    border-top: 0.1rem solid rgba(var(--color-foreground), 0.08);
+  }
+
+  .header-nav-wrapper .header__inline-menu {
+    display: flex;
+    justify-content: center;
+    margin-left: 0;
+  }
+  
+  .header-nav-wrapper .list-menu--inline {
+    justify-content: center;
+    width: 100%;
+  }
+
+  .header__heading-logo-wrapper {
+    transform: scale(1.25);
+    transform-origin: left center;
+  }
+
+  @media screen and (min-width: 990px) {
+    .header--middle-center .header__heading-logo-wrapper,
+    .header--top-center .header__heading-logo-wrapper {
+      transform-origin: center center;
+    }
+  }
+
+  @media screen and (max-width: 989px) {
+    .header--mobile-center .header__heading-logo-wrapper {
+      transform-origin: center center;
+    }
+  }
 </style>
 
 {%- style -%}
@@ -167,16 +202,6 @@
         </h1>
       {%- endif -%}
     {%- endif -%}
-
-    {%- liquid
-      if section.settings.menu != blank
-        if section.settings.menu_type_desktop == 'dropdown'
-          render 'header-dropdown-menu'
-        elsif section.settings.menu_type_desktop != 'drawer'
-          render 'header-mega-menu'
-        endif
-      endif
-    %}
 
     {%- if section.settings.logo_position == 'middle-center' -%}
       {%- if request.page_type == 'index' -%}
@@ -288,6 +313,20 @@
       </a>
     </div>
   </header>
+
+  <div class="header-nav-wrapper small-hide medium-hide">
+    <div class="page-width">
+      {%- liquid
+        if section.settings.menu != blank
+          if section.settings.menu_type_desktop == 'dropdown'
+            render 'header-dropdown-menu'
+          elsif section.settings.menu_type_desktop != 'drawer'
+            render 'header-mega-menu'
+          endif
+        endif
+      %}
+    </div>
+  </div>
 </{{ header_tag }}>
 
 {%- if settings.cart_type == "notification" -%}
