@@ -31,30 +31,46 @@
       <div class="footer-columns">
         {%- comment -%} Column 1 {%- endcomment -%}
         <div class="footer-column">
-          {%- if section.settings.link_1_text != blank -%}
-            <a href="{{ section.settings.link_1_url }}" class="footer-link">{{ section.settings.link_1_text }}</a>
+          {%- if section.settings.link_1_text != blank and section.settings.link_1_url != blank -%}
+            <a
+              href="{{ section.settings.link_1_url }}"
+              class="footer-link"
+              {% if section.settings.link_1_external %}
+                target="_blank" rel="noopener noreferrer"
+              {% endif %}
+            >
+              {{- section.settings.link_1_text -}}
+            </a>
           {%- endif -%}
-          {%- if section.settings.link_2_text != blank -%}
+          {%- if section.settings.link_2_text != blank and section.settings.link_2_url != blank -%}
             <a href="{{ section.settings.link_2_url }}" class="footer-link">{{ section.settings.link_2_text }}</a>
           {%- endif -%}
-          {%- if section.settings.link_3_text != blank -%}
+          {%- if section.settings.link_3_text != blank and section.settings.link_3_url != blank -%}
             <a href="{{ section.settings.link_3_url }}" class="footer-link">{{ section.settings.link_3_text }}</a>
           {%- endif -%}
         </div>
 
         {%- comment -%} Column 2 {%- endcomment -%}
         <div class="footer-column">
-          {%- if section.settings.link_4_text != blank -%}
+          {%- if section.settings.link_4_text != blank and section.settings.link_4_url != blank -%}
             <a href="{{ section.settings.link_4_url }}" class="footer-link">{{ section.settings.link_4_text }}</a>
           {%- endif -%}
-          {%- if section.settings.link_5_text != blank -%}
-            <a href="{{ section.settings.link_5_url }}" class="footer-link">{{ section.settings.link_5_text }}</a>
+          {%- if section.settings.link_5_text != blank and section.settings.link_5_url != blank -%}
+            <a
+              href="{{ section.settings.link_5_url }}"
+              class="footer-link"
+              {% if section.settings.link_5_external %}
+                target="_blank" rel="noopener noreferrer"
+              {% endif %}
+            >
+              {{- section.settings.link_5_text -}}
+            </a>
           {%- endif -%}
         </div>
 
         {%- comment -%} Column 3 {%- endcomment -%}
         <div class="footer-column">
-          {%- if section.settings.link_6_text != blank -%}
+          {%- if section.settings.link_6_text != blank and section.settings.link_6_url != blank -%}
             <a
               href="{{ section.settings.link_6_url }}"
               class="footer-link"
@@ -65,7 +81,7 @@
               {{- section.settings.link_6_text -}}
             </a>
           {%- endif -%}
-          {%- if section.settings.link_7_text != blank -%}
+          {%- if section.settings.link_7_text != blank and section.settings.link_7_url != blank -%}
             <a href="{{ section.settings.link_7_url }}" class="footer-link">{{ section.settings.link_7_text }}</a>
           {%- endif -%}
         </div>
@@ -267,6 +283,12 @@
       "label": "Link 1 URL"
     },
     {
+      "type": "checkbox",
+      "id": "link_1_external",
+      "label": "Open Link 1 in New Tab",
+      "default": true
+    },
+    {
       "type": "text",
       "id": "link_2_text",
       "label": "Link 2 Text",
@@ -313,6 +335,12 @@
       "type": "url",
       "id": "link_5_url",
       "label": "Link 5 URL"
+    },
+    {
+      "type": "checkbox",
+      "id": "link_5_external",
+      "label": "Open Link 5 in New Tab",
+      "default": true
     },
     {
       "type": "header",

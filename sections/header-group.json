@@ -37,10 +37,15 @@
         "padding_top": 20,
         "padding_bottom": 20
       }
+    },
+    "17852952366ba91087": {
+      "type": "_blocks",
+      "settings": {}
     }
   },
   "order": [
     "top-bar",
-    "header"
+    "header",
+    "17852952366ba91087"
   ]
 }

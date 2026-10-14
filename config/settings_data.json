@@ -11,6 +11,7 @@
   "current": {
     "logo": "shopify://shop_images/logo.webp",
     "logo_width": 200,
+    "favicon": "shopify://shop_images/favicon-512.png",
     "type_header_font": "assistant_n4",
     "heading_scale": 100,
     "type_body_font": "assistant_n4",
@@ -136,6 +137,13 @@
       }
     },
     "content_for_index": [],
+    "blocks": {
+      "4778786437083426062": {
+        "type": "shopify://apps/wisernotify-reviews/blocks/pixel/c9dad0b1-2b42-42c3-b484-666f36432323",
+        "disabled": false,
+        "settings": {}
+      }
+    },
     "color_schemes": {
       "scheme-1": {
         "settings": {

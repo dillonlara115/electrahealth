@@ -1,0 +1,776 @@
+{% if widget_type == 'wnreview_core' %}
+  <style>
+    {{ shop.metafields.wisernotify.star_rating_cnf.value.css }}
+  </style>
+{% endif %}
+
+{% if widget_type == 'wnreview_star_rating' %}
+{% if shop.metafields.wisernotify.app_status.value != 'false' %}
+<div
+data-type="star_rating"
+data-pid="{{ product.id }}"
+class="wiser_review_star_widget"
+style="display: none;">
+  {% assign data = product.metafields.wisernotify.star_rating.value %}
+
+  {% if request.design_mode %}
+    {% assign data = shop.metafields.wisernotify.dummy_data.value.dataRating %}
+  {% endif %}
+  
+  {% assign starRatingCNF = shop.metafields.wisernotify.star_rating_cnf %}
+  {% assign avgPer = data.avgrtng | times: 100 | divided_by: 5 %}
+  {% assign prtngCount = data.prtng | default: 0 %}
+  {% assign quesCount = data.queCount | default: 0 %}
+  {% assign arrDisablePid = shop.metafields.wisernotify.arr_disable_pid.value %}
+  {% assign current_product_id_string = product.id | append: '' %}
+  {% assign singleStarHTML = "<span data-wsr-star='{{STAR_AVRG_RATING}}' class='Wsrspfapp-stars-list-fullret {{STAR_STYLE}}' style='--star_actbgcolor:{{STAR_COLOR}}; --avg-per:100%;'></span>" %}
+
+  {% assign isAverage = false %}
+  {% if starRatingCNF.value.cnf.avrgrtngcntless and starRatingCNF.value.cnf.iavrgrtng == true %}
+    {% assign avrgrtngcntless_int = starRatingCNF.value.cnf.avrgrtngcntless | plus: 0 %}
+    {% if prtngCount < avrgrtngcntless_int %}
+      {% assign isAverage = true %}
+    {% endif %}
+  {% endif %}
+  
+  {% assign formattedAvgRating=data.avgrtng | times: 100 | round | divided_by: 100.0 %}
+  {% assign TOTAL_REVIEW_COUNT_HTML = "" %}
+  {% assign singular_rtng_txt = starRatingCNF.value.cnf.hdravgtxtsingulr2 |default: '' %} 
+  {% assign avrgrtngtxt = starRatingCNF.value.cnf.avrgrtngtxt | default: '' %}
+  {% comment %} no reviews text for 0 review, product page only. empty quill value ('<p><br></p>') counts as not set {% endcomment %}
+  {% assign no_rtng_txt_plain = starRatingCNF.value.cnf.nortngtxtpdp | default: '' | strip_html | strip %}
+
+  {% if prtngCount == 0 and template contains "product" and starRatingCNF.value.cnf.isnortngtxtpdp == true and no_rtng_txt_plain != blank %}
+    {% assign TOTAL_REVIEW_COUNT_HTML = '<span class="WsrsStar-no-revTxt">' | append: starRatingCNF.value.cnf.nortngtxtpdp | append: '</span>' %}
+  {% elsif isAverage == true %}
+    {% assign TOTAL_REVIEW_COUNT_HTML = avrgrtngtxt | default: formattedAvgRating %}
+  {% else %}
+    {% if prtngCount <= 1 and singular_rtng_txt != blank %}
+      {% assign TOTAL_REVIEW_COUNT_HTML = singular_rtng_txt %} 
+    {% elsif starRatingCNF.value.cnf.rtngtxt != blank %}
+      {% assign TOTAL_REVIEW_COUNT_HTML = starRatingCNF.value.cnf.rtngtxt %}
+    {% else %}
+      {% assign TOTAL_REVIEW_COUNT_HTML = '(' | append: prtngCount | append: ' Reviews)' %}
+    {% endif %}
+  {% endif %}
+
+  {% assign html = starRatingCNF.value.htmlLayout
+    | replace: '{{HTML_CARD}}', starRatingCNF.value.htmlCard
+    | replace: '{{TOTAL_REVIEW_COUNT}}', TOTAL_REVIEW_COUNT_HTML
+    | replace: '{{TOTAL_RATING}}', prtngCount
+    | replace: '{{TOTAL_QUESTION}}', quesCount
+    | replace: '{{RATING_STAR}}', singleStarHTML
+    | replace: '{{STAR_COLOR}}', starRatingCNF.value.cnf.strclr
+    | replace: '{CRD_BG_CLR}', starRatingCNF.value.cnf.crdbgclr
+    | replace: '{{STAR_TXT_CLR}}', starRatingCNF.value.cnf.rtngtxtclr | default: 'inherit'
+    | replace: '{{STAR_AVRG_RATING}}', formattedAvgRating
+    | replace: '{{STAR_AVRG_RATING_PER}}', avgPer
+    | replace: '{{STAR_STYLE}}', starRatingCNF.value.cnf.strstl | default: 'with_border_round'
+    | replace: '{{ASK_AI}}', '<div id="ask_ai_main_div"></div>'
+  %}
+
+  {% unless arrDisablePid contains current_product_id_string %}
+    {% if template contains "product" %}
+      {% if starRatingCNF.value.cnf.ihdzrstrpdp != true or prtngCount > 0 %}
+        {{ html }}
+      {% endif %}
+    {% else %}
+      {% if starRatingCNF.value.cnf.ihdzrstrctlg != true or prtngCount > 0 %}
+        {{ html }}
+      {% endif %}
+    {% endif %} 
+  {% endunless %}
+  </div>
+
+  {% comment %} load Ask AI popup assets (button is rendered above; popup logic in askai.js) {% endcomment %}
+  {% if starRatingCNF.value.cnf.iaskai == true %}
+    <link rel="stylesheet" id="ai-css" href="https://embed.wiserreview.com/pixel/askai.css">
+    <script src="https://embed.wiserreview.com/pixel/askai.js" defer></script>
+  {% endif %}
+
+  {% assign star_widget_dynamic_css_enable = shop.metafields.wisernotify.star_rating_cnf.value.cnf.icstcss | default:false %}
+  {% assign star_widget_dynamic_css = shop.metafields.wisernotify.star_rating_cnf.value.cnf.cstcss %}
+
+  <script>
+    flagIsFromIframe_WDSHPRV=false;
+
+    var respDataForStarRating={
+        wdtyp: "star_rating",
+        dataObj:{
+          wdtyp:"star_rating",
+          wsid:"{{ shop.metafields.wisernotify.star_rating_cnf.value.wsid }}",
+          cnf:{{ starRatingCNF.value.cnf | json }},
+          data:{{ data | json }}
+        }
+      };
+
+      //keep one star_rating entry for the whole page, same shape as the other platform:
+      //reviewPixel.js build one entry with a dataRating array. cnf & html is same for every product
+      //of this page, only the rating change. so the 1st block hold the entry & the other block only
+      //add their rating in it. every consumer(star ws_theme.js, askai.js) read the first entry only
+      if(typeof arrRespData_WDSHPRV === 'undefined') arrRespData_WDSHPRV=[];
+
+      var _objStarEntry_WDSHPRV = arrRespData_WDSHPRV.find(function(x){ return x.wdtyp == 'star_rating'; });
+      //design mode data is the dummy rating array, it have no pid: keep it out of the list
+      var _isOwnRtng_WDSHPRV = !!(respDataForStarRating.dataObj.data && respDataForStarRating.dataObj.data.pid);
+
+      if(!_objStarEntry_WDSHPRV){
+        respDataForStarRating.dataObj.dataRating = _isOwnRtng_WDSHPRV ? [respDataForStarRating.dataObj.data] : [];
+        arrRespData_WDSHPRV.push(respDataForStarRating);
+      }
+      else if(_isOwnRtng_WDSHPRV){
+        _objStarEntry_WDSHPRV.dataObj.dataRating.push(respDataForStarRating.dataObj.data);
+      }
+
+    if({{ star_widget_dynamic_css_enable }}){
+        let cssWithClassName = `{{ star_widget_dynamic_css }}`.replace(/\n/gi, '').split('}').map(rule => rule ? ('[data-type="star_rating"] ' + rule + '}') : '').join('');
+        var style = document.createElement("style");
+        style.innerHTML = cssWithClassName;
+        document.head.appendChild(style);
+      }
+  </script>
+
+{% endif %}
+{% endif %}
+
+{% if widget_type == 'wnreview_main_widget' %}
+ {% if shop.metafields.wisernotify.app_status.value != 'false' %}
+  <div
+    id="wiser_review_main"
+    class="wiser_review_main_widget"
+    data-type="main"
+    style="display:none">
+    {% assign dataArr = product.metafields.wisernotify.main_widget.value.data %}
+    {% assign dataCount = product.metafields.wisernotify.main_widget.value.dataCount %}
+    {% assign dataMedia = product.metafields.wisernotify.main_widget.value.dataMedia %}
+    {% assign emtyrvwtyp = product.metafields.wisernotify.main_widget.value.emtyrvwtyp %}
+    {% assign dataMedal = shop.metafields.wisernotify.main_widget_cnf.value.dataMedal %}
+
+    {% assign cnfData = shop.metafields.wisernotify.main_widget_cnf.value.cnf %}
+    {% assign htmlCard = shop.metafields.wisernotify.main_widget_cnf.value.htmlCard %}
+    {% assign htmlLayout = shop.metafields.wisernotify.main_widget_cnf.value.htmlLayout %}
+    {% assign htnwrtfrm = shop.metafields.wisernotify.main_widget_cnf.value.htnwrtfrm %}
+    {% assign htmlPopup = shop.metafields.wisernotify.main_widget_cnf.value.htmlPopup %}
+    {% assign pgsz = shop.metafields.wisernotify.main_widget_cnf.value.pgsz %}
+    {% assign srt = shop.metafields.wisernotify.main_widget_cnf.value.srt %}
+    {% assign lstTag = shop.metafields.wisernotify.main_widget_cnf.value.lstTag %}
+    {% assign arrtgid = shop.metafields.wisernotify.main_widget_cnf.value.arrtgid %}
+    {% assign dataCustQue = shop.metafields.wisernotify.dataCustQue | default: "[]" %}
+    {% assign dataFormQue = shop.metafields.wisernotify.main_widget_cnf.value.dataFormQue %}
+
+    {% assign cnfDataQueAns = shop.metafields.wisernotify.que_ans_widget_cnf.value.cnf %}
+    {% assign htmlCardQueAns = shop.metafields.wisernotify.que_ans_widget_cnf.value.htmlCard %}
+    {% assign htmlLayoutQueAns = shop.metafields.wisernotify.que_ans_widget_cnf.value.htmlLayout %}
+    {% assign htnwrtfrmQueAns = shop.metafields.wisernotify.que_ans_widget_cnf.value.htnwrtfrm %}
+    {% assign dataArrQueAns = product.metafields.wisernotify.main_widget.value.dataQueAns %}
+    {% assign dataCountQueAns = product.metafields.wisernotify.main_widget.value.dataCountQueAns | default: 0 %}
+
+    {% assign cardHTML = '' %}
+
+    {% if dataArr and dataArr.size > 0 %}
+      {% assign widgetId = shop.metafields.wisernotify.main_widget_cnf.value._id %}
+      {% assign widgetTitle = cnfData.title | default: "Reviews" %}
+      <div class="wiserreview_{{ widgetId }}" data-id="{{ widgetId }}" data-block-handle="main">
+        <style>
+          .wiserreview_{{ widgetId }} {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            margin: -1px;
+            padding: 0;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+          }
+        </style>
+
+        <h2>{{ widgetTitle }}</h2>
+
+        {% for item in dataArr %}
+          <div class="review-item">
+            <div class="review-product">
+              <a href="{{ item.pu | default: '#' }}" class="review-product-link">{{ item.pn | default: 'Unknown' }}</a>
+            </div>
+            <div class="review-author">{{ item.un | default: 'Unknown' }}</div>
+            <div class="review-rating">Rating: {{ item.rtng | default: 0 }}/5</div>
+            <div class="review-title">{{ item.rttl }}</div>
+            <div class="review-body">
+              {{ item.rtxt | default: 'No Review' }}
+            </div>
+            <div class="review-date">{{ item.cdt | default: 'Unknown Date' }}</div>
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    {% if request.design_mode %}
+      {% assign dataArr = shop.metafields.wisernotify.dummy_data.value.data %}
+      {% assign dataCount = shop.metafields.wisernotify.dummy_data.value.dataCount %}
+      {% assign dataMedia = shop.metafields.wisernotify.dummy_data.value.dataMedia %}
+    {% endif %}
+
+     </div>
+
+
+  <script>
+    flagIsFromIframe_WDSHPRV=false;
+    //var isFirstLoadForShopify=true;
+    var respDataForMain={
+    wdtyp: "main",
+    dataObj:{
+      wdtyp:"main",
+      wsid:"{{ shop.metafields.wisernotify.main_widget_cnf.value.wsid }}",
+      cnf:{{ shop.metafields.wisernotify.main_widget_cnf.value.cnf | json }},
+      data:{{ dataArr | json }},
+      dataCount:{{ dataCount | json }},
+      dataMedia:{{ dataMedia | json }},
+      dataMedal:{{ dataMedal | json }},
+      htmlLayout:"{{ htmlLayout }}",
+      htmlCard:"{{ htmlCard }}",
+      htncrd:"{{ shop.metafields.wisernotify.main_widget_cnf.value.htncrd }}",
+      htmlWriteForm:"{{ htnwrtfrm }}",
+      htmlPopup:"{{ htmlPopup }}",
+      cnfQueAns:{{ cnfDataQueAns | json }},
+      dataQueAns:{{ dataArrQueAns | json }},
+      dataCountQueAns:{{ dataCountQueAns }},
+      htmlLayoutQueAns:"{{ htmlLayoutQueAns }}",
+      htmlCardQueAns:"{{ htmlCardQueAns }}",
+      htmlWriteFormQueAns:"{{ htnwrtfrmQueAns }}",
+      fdbkfrmid:"{{ shop.metafields.wisernotify.main_widget_cnf.value.fdbkfrmid }}",
+      _id:"{{ shop.metafields.wisernotify.main_widget_cnf.value._id }}",
+      objProduct:{
+        product_title: `{{ product.title }}`,
+        product_type: `{{ product.type }}`,
+        product_id: `{{ product.id }}`,
+      },
+      pgsz: {{ pgsz | default: 10 }},
+      srt: "{{ srt }}",
+      arrtgid:{{ arrtgid | json }},
+      dataCustQue:{{ dataCustQue }},
+      dataFormQue:{{ dataFormQue | json }}
+    },
+    lstTag:{{ lstTag | json }}
+      };
+    
+      if(typeof arrRespData_WDSHPRV !== 'undefined'){
+        arrRespData_WDSHPRV.push(respDataForMain);
+      }
+      else{
+        arrRespData_WDSHPRV=[respDataForMain];
+      }
+
+      //this product have no review & 'show instead' setting(cnf.emtyrvwtyp) is on: get fallback review from getData api
+      //we dont store fallback review in product metafield, bcz it need metafield update call for each product
+      var _promEmtyRvw_WDSHPRV = null;
+      var _emtyRvwTyp_WDSHPRV = {{ cnfData.emtyrvwtyp | default: '' | json }};
+      //iemptydiv: user want to show 'no reviews' message, so no fallback review
+      var _iEmtyDiv_WDSHPRV = {{ cnfData.iemptydiv | default: false | json }};
+
+      if(_emtyRvwTyp_WDSHPRV && !_iEmtyDiv_WDSHPRV && (!respDataForMain.dataObj.data || respDataForMain.dataObj.data.length === 0)){
+        _promEmtyRvw_WDSHPRV = fetch("https://rs.wiserreview.com/api/getData", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            arrType: ["main"],
+            pid: "{{ product.id }}",
+            arrPid: [],
+            wsid: respDataForMain.dataObj.wsid,
+            href: window.location.href
+          })
+        })
+        .then(function(res){ return res.json(); })
+        .then(function(res){
+          var objData = res && res.data && res.data[0];
+          //only replace when we really get the fallback review, else keep the 'no reviews' state
+          if(objData && objData.emtyrvwtyp && objData.data && objData.data.length > 0){
+            respDataForMain.dataObj.data = objData.data;
+            respDataForMain.dataObj.dataCount = objData.dataCount || respDataForMain.dataObj.dataCount;
+            respDataForMain.dataObj.dataMedia = objData.dataMedia || [];
+            respDataForMain.dataObj.dataFormQue = objData.dataFormQue || respDataForMain.dataObj.dataFormQue;
+            //ws_theme.js send it back on next page(load more/sort/filter) api call
+            respDataForMain.dataObj.emtyrvwtyp = objData.emtyrvwtyp;
+          }
+        })
+        .catch(function(){});
+      }
+
+      function loadResources(){
+        const e = (e, t, s, o, defer = false) => {
+        const a = document.createElement(t);
+        a[s] = "https://embed.wiserreview.com/pixel/theme/"+e;
+        if (o) a.rel = o;
+        if (defer && t === "script") a.defer = true;
+        document.getElementsByTagName("head")[0].appendChild(a);
+    };
+        var _fnLoad = function(){
+          setTimeout(() => {
+            e("main/ws_theme.css","link","href","stylesheet"),
+              e("main/ws_theme.js","script","src",null,true)
+          }, 1000);
+        };
+
+        //wait for the fallback review api, so theme js get the data on first render. max wait 3 second
+        if(_promEmtyRvw_WDSHPRV){
+          Promise.race([
+            _promEmtyRvw_WDSHPRV,
+            new Promise(function(resolve){ setTimeout(resolve, 3000); })
+          ]).then(_fnLoad);
+        }
+        else _fnLoad();
+      }
+      window.addEventListener("DOMContentLoaded",loadResources);
+  </script>
+
+  {% comment %} emtyrvwtyp: this product have no review & we show other product/store review. so no schema json for it {% endcomment %}
+  {% if dataCount.prtng > 0 and cnfData.iprdctrcsnpt and emtyrvwtyp == blank %}
+    <script>
+      // Merge rating + reviews into the theme's existing Product schema. Adds nothing if it has none.
+      (function () {
+        var rating = {
+          "@type": "AggregateRating",
+          "ratingValue": {{ dataCount.avgrtng | json }},
+          "reviewCount": {{ dataCount.prtng | json }},
+          "bestRating": 5,
+          "worstRating": 1
+        };
+        var reviews = [
+          {% for review in dataArr %}
+          {
+            "@type": "Review",
+            "author": { "@type": "Person", "name": {{ review.un | default: 'Anonymous' | json }} },
+            "reviewBody": {{ review.rtxt | json }},
+            "reviewRating": { "@type": "Rating", "ratingValue": {{ review.rtng | json }}, "bestRating": 5, "worstRating": 1 },
+            "publisher": { "@type": "Organization", "name": "WiserReview" }
+          }{% if forloop.last == false %},{% endif %}
+          {% endfor %}
+        ].filter(function (r) { return r.reviewBody; });
+
+        var isProduct = function (n) {
+          var t = n && n["@type"];
+          return t === "Product" || (Array.isArray(t) && t.indexOf("Product") > -1);
+        };
+        var merge = function () {
+          return [].slice.call(document.querySelectorAll('script[type="application/ld+json"]')).some(function (s) {
+            var d;
+            try { d = JSON.parse(s.textContent); } catch (e) { return false; }
+            var p = [].concat(d["@graph"] || d).filter(isProduct)[0];
+            if (!p || p.aggregateRating) return false;
+            p.aggregateRating = rating;
+            if (reviews.length) p.review = reviews;
+            s.textContent = JSON.stringify(d);
+            s.id = "WiserReviewSchemaJson";
+            return true;
+          });
+        };
+        if (!merge()) window.addEventListener("load", merge);
+      })();
+    </script>
+  {% endif %}
+
+{% endif %}
+{% endif %}
+
+{% if widget_type == 'wnreview_wall_widget' %}
+  {% if shop.metafields.wisernotify.app_status.value != 'false' %}
+
+  <div
+    data-type="wall"
+    data-id="{{ shop.metafields.wisernotify.wall_widget.value._id }}"
+    class="wiser_wall"></div>
+  <script>
+    (function () {
+      const script = document.createElement('script');
+      script.setAttribute('src', "https://embed.wiserreview.com/embed/{{ shop.metafields.wisernotify.wall_widget.value._id }}/widget.js");
+      script.onerror = function () {
+        fetch('https://rs.wiserreview.com/api/updateJS?wdtyp=wall&widgetId={{ shop.metafields.wisernotify.wall_widget.value._id }}&cache=false&wsid={{ shop.metafields.wisernotify.wall_widget.value.wsid }}');
+      };
+      document.body.appendChild(script);
+    })();
+  </script>
+
+{% endif %}
+{%- endif %}
+
+{% if widget_type == 'wnreview_verified_badge' %}
+  {% if shop.metafields.wisernotify.app_status.value != 'false' %}
+
+  <div
+    data-type="verified_badge"
+    class="wiser_review_verified_badge"
+    data-id="{{ shop.metafields.wisernotify.verified_badge.value._id }}"></div>
+  <script>
+    (function () {
+      const script = document.createElement('script');
+      script.setAttribute('src', "https://embed.wiserreview.com/embed/{{ shop.metafields.wisernotify.verified_badge.value._id }}/widget.js");
+      script.onerror = function () {
+        fetch('https://rs.wiserreview.com/api/updateJS?wdtyp=verified_badge&widgetId={{ shop.metafields.wisernotify.verified_badge.value._id }}&cache=false&wsid={{ shop.metafields.wisernotify.verified_badge.value.wsid }}');
+      };
+      document.body.appendChild(script);
+    })();
+  </script>
+
+{% endif %}
+{% endif %}
+
+{% if widget_type == 'wnreview_carousel' %}
+  {% if shop.metafields.wisernotify.app_status.value != 'false' %}
+
+  <div
+    data-type="carousel"
+    class="wiser_review_carousel"
+    data-id="{{ shop.metafields.wisernotify.carousel.value._id }}"></div>
+  <script>
+    (function () {
+      const script = document.createElement('script');
+      script.setAttribute('src', "https://embed.wiserreview.com/embed/{{ shop.metafields.wisernotify.carousel.value._id }}/widget.js");
+      script.onerror = function () {
+        fetch('https://rs.wiserreview.com/api/updateJS?wdtyp=carousel&widgetId={{ shop.metafields.wisernotify.carousel.value._id }}&cache=false&wsid={{ shop.metafields.wisernotify.carousel.value.wsid }}');
+      };
+      document.body.appendChild(script);
+    })();
+  </script>
+
+{% endif %}
+{% endif %}
+
+{% if widget_type == 'wnreview_carousel_auto_slider' %}
+ {% if shop.metafields.wisernotify.app_status.value != 'false' %}
+  <div
+    data-type="auto_slider"
+    class="wiser_review_auto_slider"
+    data-id="{{ shop.metafields.wisernotify.auto_slider.value._id }}"></div>
+  <script>
+    (function () {
+      const script = document.createElement('script');
+      script.setAttribute('src', "https://embed.wiserreview.com/embed/{{ shop.metafields.wisernotify.auto_slider.value._id }}/widget.js");
+      script.onerror = function () {
+        fetch('https://rs.wiserreview.com/api/updateJS?wdtyp=auto_slider&widgetId={{ shop.metafields.wisernotify.auto_slider.value._id }}&cache=false&wsid={{ shop.metafields.wisernotify.auto_slider.value.wsid }}');
+      };
+      document.body.appendChild(script);
+    })();
+  </script>
+
+{% endif %}
+{% endif %}
+
+{% if widget_type == 'wnreview_carousel_product' %}
+  {% if shop.metafields.wisernotify.app_status.value != 'false' %}
+    {% assign arrDisablePid = shop.metafields.wisernotify.arr_disable_pid.value %}
+    {% assign current_product_id_string = product.id | append: '' %}
+
+    {% unless arrDisablePid contains current_product_id_string %}
+      <div data-block-handle="carousel_product">
+        <div
+          id="wiser_review_carousel_product"
+         
+          data-type="carousel_product"
+          class="wiser_review_carousel_product"
+        >
+          {% assign carouselProductCNF = shop.metafields.wisernotify.carousel_product.value.cnf %}
+          {% assign carouselProductLayout = shop.metafields.wisernotify.carousel_product.value.htmlLayout %}
+          {% assign carouselProductCard = shop.metafields.wisernotify.carousel_product.value.htmlCard %}
+          {% assign carouselProductData = product.metafields.wisernotify.carousel_product.value.data %}
+
+          {% if request.design_mode %}
+            {% assign carouselProductData = shop.metafields.wisernotify.dummy_data.value.data %}
+          {% endif %}
+        </div>
+      </div>
+
+      {% assign carousel_product_dynamic_css_enable = carouselProductCNF.icstcss | default:false %}
+      {% assign carousel_product_dynamic_css = carouselProductCNF.cstcss %}
+    {% endunless %}
+
+    <script>
+    flagIsFromIframe_WDSHPRV=false;
+    
+      var respDataForCarouselProduct={
+        wdtyp: "carousel_product",
+        dataObj:{
+          _id:'{{ shop.metafields.wisernotify.carousel_product.value._id }}',
+          wdtyp:"carousel_product",
+          wsid:"{{ shop.metafields.wisernotify.carousel_product.value.wsid }}",
+          cnf:{{ carouselProductCNF | json }},
+          data:{{ carouselProductData | json }},
+          htmlLayout:"{{ carouselProductLayout }}",
+          htmlCard:"{{ carouselProductCard }}"
+        }
+      };
+    
+      if(typeof arrRespData_WDSHPRV !== 'undefined'){
+        arrRespData_WDSHPRV.push(respDataForCarouselProduct);
+      }
+      else{
+        arrRespData_WDSHPRV=[respDataForCarouselProduct];
+      }
+    
+      if({{ carousel_product_dynamic_css_enable }}){
+        let cssWithClassName = `{{ carousel_product_dynamic_css }}`.replace(/\n/gi, '').split('}').map(rule => rule ? ('[data-type="carousel_product"] ' + rule + '}') : '').join('');
+        var style = document.createElement("style");
+        style.innerHTML = cssWithClassName;
+        document.head.appendChild(style);
+      }
+
+      function loadResources(){
+        const e=(e,t,s,o)=>{
+        const a=document.createElement(t); a[s]="https://embed.wiserreview.com/pixel/theme/"+e, o&&(a.rel=o), document.getElementsByTagName("head")[0].appendChild(a)};
+        e("carousel_product/ws_theme.css","link","href","stylesheet"),
+        e("carousel_product/ws_theme.js","script","src")
+    }
+    window.addEventListener("DOMContentLoaded",loadResources);
+    </script>
+  {% endif %}
+{% endif %}
+
+{% if widget_type == 'wnreview_ugc' %}
+  {% if shop.metafields.wisernotify.app_status.value != 'false' %}
+
+  <div
+    data-type="ugc"
+    class="wiser_review_ugc"
+    data-id="{{ shop.metafields.wisernotify.ugc.value._id }}"></div>
+  <script>
+    (function () {
+      const script = document.createElement('script');
+      script.setAttribute('src', "https://embed.wiserreview.com/embed/{{ shop.metafields.wisernotify.ugc.value._id }}/widget.js");
+      script.onerror = function () {
+        fetch('https://rs.wiserreview.com/api/updateJS?wdtyp=ugc&widgetId={{ shop.metafields.wisernotify.ugc.value._id }}&cache=false&wsid={{ shop.metafields.wisernotify.ugc.value.wsid }}');
+      };
+      document.body.appendChild(script);
+    })();
+  </script>
+
+{% endif %}
+{% endif %}
+
+{% if widget_type == 'wnreview_avatar' %}
+  {% if shop.metafields.wisernotify.app_status.value != 'false' %}
+  <div
+    data-type="avatar"
+    data-id="{{ shop.metafields.wisernotify.avatar.value._id }}"
+    class="wiser_review_avatar"></div>
+  <script>
+    (function () {
+      const script = document.createElement('script');
+      script.setAttribute('src', "https://embed.wiserreview.com/embed/{{ shop.metafields.wisernotify.avatar.value._id }}/widget.js");
+      script.onerror = function () {
+        fetch('https://rs.wiserreview.com/api/updateJS?wdtyp=avatar&widgetId={{ shop.metafields.wisernotify.avatar.value._id }}&cache=false&wsid={{ shop.metafields.wisernotify.avatar.value.wsid }}');
+      };
+      document.body.appendChild(script);
+    })();
+  </script>
+
+{% endif %}
+{% endif %}
+
+{% if widget_type == 'wnreview_ai_story' %}
+  {% if shop.metafields.wisernotify.app_status.value != 'false' %}
+  <div
+    data-type="ai_story"
+    class="wiser_review_ai_story"
+    style="display: none;">
+
+    {% assign data = product.metafields.wisernotify.ai_story_widget.value.data %}
+    {% assign dataCount = product.metafields.wisernotify.ai_story_widget.value.dataCount %}
+    {% assign dataMedia = product.metafields.wisernotify.ai_story_widget.value.dataMedia %}
+    {% assign storiesCNF = shop.metafields.wisernotify.ai_story_cnf %}
+
+    {% if request.design_mode %}
+      {% comment %} theme-editor preview: dummy_data has data/dataCount/dataMedia but NOT aitopics/topicsmry — theme JS falls back {% endcomment %}
+      {% assign data = shop.metafields.wisernotify.dummy_data.value.data %}
+      {% assign dataCount = shop.metafields.wisernotify.dummy_data.value.dataCount %}
+      {% assign dataMedia = shop.metafields.wisernotify.dummy_data.value.dataMedia %}
+    {% endif %}
+
+    {% assign arrDisablePid = shop.metafields.wisernotify.arr_disable_pid.value %}
+    {% assign current_product_id_string = product.id | append: '' %}
+    {% assign prtngCount = dataCount.prtng | default: 0 %}
+
+  </div>
+
+  {% unless arrDisablePid contains current_product_id_string %}
+    {% if prtngCount > 0 or request.design_mode %}
+      <script>
+        flagIsFromIframe_WDSHPRV = false;
+
+        var respDataForAiStories = {
+          wdtyp: "ai_story",
+          dataObj: {
+            wdtyp: "ai_story",
+            wsid: "{{ storiesCNF.value.wsid }}",
+            cnf: {{ storiesCNF.value.cnf | json }},
+            data: {{ data | json }},
+            dataCount: {{ dataCount | json }},
+            dataMedia: {{ dataMedia | json }},
+            htmlLayout: "{{ storiesCNF.value.htmlLayout }}",
+            _id: "{{ storiesCNF.value._id }}",
+            objProduct: {
+              product_title: `{{ product.title }}`,
+              product_type: `{{ product.type }}`,
+              product_id: `{{ product.id }}`,
+              product_url: `{{ shop.url }}{{ product.url }}`,
+              product_img: `{{ product.featured_image | image_url: width: 200 }}`
+            }
+          }
+        };
+
+        if (typeof arrRespData_WDSHPRV !== 'undefined') {
+          arrRespData_WDSHPRV.push(respDataForAiStories);
+        } else {
+          arrRespData_WDSHPRV = [respDataForAiStories];
+        }
+
+        function loadAiStoriesResources() {
+          const e = (file, tag, attr, rel, defer = false) => {
+            const a = document.createElement(tag);
+            a[attr] = "https://embed.wiserreview.com/pixel/theme/" + file;
+            if (rel) a.rel = rel;
+            if (defer && tag === "script") a.defer = true;
+            document.getElementsByTagName("head")[0].appendChild(a);
+          };
+          setTimeout(() => {
+            e("ai_story/ws_theme.css", "link", "href", "stylesheet"),
+            e("ai_story/ws_theme.js", "script", "src", null, true);
+          }, 1000);
+        }
+        window.addEventListener("DOMContentLoaded", loadAiStoriesResources);
+      </script>
+
+      {% assign ai_stories_dynamic_css_enable = storiesCNF.value.cnf.icstcss | default: false %}
+      {% assign ai_stories_dynamic_css = storiesCNF.value.cnf.cstcss %}
+      <script>
+        if ({{ ai_stories_dynamic_css_enable }}) {
+          let cssWithClassName = `{{ ai_stories_dynamic_css }}`.replace(/\n/gi, '').split('}').map(rule => rule ? ('[data-type="ai_story"] ' + rule + '}') : '').join('');
+          var style = document.createElement("style");
+          style.innerHTML = cssWithClassName;
+          document.head.appendChild(style);
+        }
+      </script>
+    {% endif %}
+  {% endunless %}
+
+{% endif %}
+{% endif %}
+
+{% if widget_type == 'wnreview_carousel_video' %}
+  {% if shop.metafields.wisernotify.app_status.value != 'false' %}
+
+  <div
+    data-type="carousel"
+    class="wiser_review_carousel"
+    data-id="{{ shop.metafields.wisernotify.carousel_video.value._id }}"></div>
+  <script>
+    (function () {
+      const script = document.createElement('script');
+      script.setAttribute('src', "https://embed.wiserreview.com/embed/{{ shop.metafields.wisernotify.carousel_video.value._id }}/widget.js");
+      script.onerror = function () {
+        fetch('https://rs.wiserreview.com/api/updateJS?wdtyp=carousel&widgetId={{ shop.metafields.wisernotify.carousel_video.value._id }}&cache=false&wsid={{ shop.metafields.wisernotify.carousel_video.value.wsid }}');
+      };
+      document.body.appendChild(script);
+    })();
+  </script>
+
+{% endif %}
+{% endif %}
+
+{% if widget_type == 'wnreview_floating_badge' %}
+  {% if shop.metafields.wisernotify.app_status.value != 'false' %}
+
+  <div
+    class="wiser_review_floating_badge"
+    data-type="floating_badge"
+    data-id="{{ shop.metafields.wisernotify.floating_badge.value._id }}"></div>
+  <script>
+    (function () {
+      const script = document.createElement('script');
+      script.setAttribute('src', "https://embed.wiserreview.com/embed/{{ shop.metafields.wisernotify.floating_badge.value._id }}/widget.js");
+      script.onerror = function () {
+        fetch('https://rs.wiserreview.com/api/updateJS?wdtyp=floating_badge&widgetId={{ shop.metafields.wisernotify.floating_badge.value._id }}&cache=false&wsid={{ shop.metafields.wisernotify.floating_badge.value.wsid }}');
+      };
+      document.body.appendChild(script);
+    })();
+  </script>
+
+{% endif %}
+{% endif %}
+
+{% if widget_type == 'wnreview_popup_widget' %}
+  {% if shop.metafields.wisernotify.app_status.value != 'false' %}
+
+  <div
+    id="wiser_review_popup_widget"
+    data-type="popup_widget"
+    data-id="{{ shop.metafields.wisernotify.popup_widget.value._id }}"></div>
+  <script>
+    (function () {
+      const script = document.createElement('script');
+      script.setAttribute('src', "https://embed.wiserreview.com/embed/{{ shop.metafields.wisernotify.popup_widget.value._id }}/widget.js");
+      script.onerror = function () {
+        fetch('https://rs.wiserreview.com/api/updateJS?wdtyp=popup_widget&widgetId={{ shop.metafields.wisernotify.popup_widget.value._id }}&cache=false&wsid={{ shop.metafields.wisernotify.popup_widget.value.wsid }}');
+      };
+      document.body.appendChild(script);
+    })();
+  </script>
+
+{% endif %}
+{% endif %}
+
+{% if widget_type == 'wnreview_sidebar_cta' %}
+  {% if shop.metafields.wisernotify.app_status.value != 'false' %}
+  <div
+    class="wiser_review_sidebar_cta"
+    data-type="sidebar_cta"
+    data-id="{{ shop.metafields.wisernotify.sidebar_cta.value._id }}"></div>
+  <script>
+    (function () {
+      const script = document.createElement('script');
+      script.setAttribute('src', "https://embed.wiserreview.com/embed/{{ shop.metafields.wisernotify.sidebar_cta.value._id }}/widget.js");
+      script.onerror = function () {
+        fetch('https://rs.wiserreview.com/api/updateJS?wdtyp=sidebar_cta&widgetId={{ shop.metafields.wisernotify.sidebar_cta.value._id }}&cache=false&wsid={{ shop.metafields.wisernotify.sidebar_cta.value.wsid }}');
+      };
+      document.body.appendChild(script);
+    })();
+  </script>
+{% endif %}
+{% endif %}
+
+{% if widget_type == 'wnreview_referral_widget' %}
+  {% if shop.metafields.wisernotify.app_status.value != 'false' %}
+
+  <div class="wiser_review_referral_widget" data-type="referral_widget"></div>
+
+  <script>
+    (function () {
+      const script = document.createElement('script');
+      script.setAttribute('src', "https://embed.wiserreview.com/embed/{{ shop.metafields.wisernotify.referral_widget.value.wsid }}/referral_widget/widget.js");
+      script.onerror = function () {
+        fetch('https://rs.wiserreview.com/api/updateJS?wdtyp=referral_widget&widgetId={{ shop.metafields.wisernotify.referral_widget.value._id }}&cache=false&wsid={{ shop.metafields.wisernotify.referral_widget.value.wsid }}');
+      };
+      document.body.appendChild(script);
+    })();
+  </script>
+
+{% endif %}
+{% endif %}
+
+{% if widget_type == 'wnreview_loyalty_panel' %}
+  {% if shop.metafields.wisernotify.app_status.value != 'false' %}
+
+  <div
+    data-type="loyalty_panel"
+    class="wiser_review_loyalty"
+    data-id="{{ shop.metafields.wisernotify.loyalty_panel.value._id }}"></div>
+  <script>
+    (function () {
+      const script = document.createElement('script');
+      script.setAttribute('src', "https://embed.wiserreview.com/embed/{{ shop.metafields.wisernotify.loyalty_panel.value._id }}/widget.js");
+      script.onerror = function () {
+        fetch('https://rs.wiserreview.com/api/updateJS?wdtyp=loyalty_panel&widgetId={{ shop.metafields.wisernotify.loyalty_panel.value._id }}&cache=false&wsid={{ shop.metafields.wisernotify.loyalty_panel.value.wsid }}');
+      };
+      document.body.appendChild(script);
+    })();
+  </script>
+
+{% endif %}
+{% endif %}
