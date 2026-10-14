@@ -500,15 +500,24 @@
                 </div>
               {%- when 'product_badges' -%}
                 {%- if block.settings.show_badges -%}
+                  {%- liquid
+                    assign returns_badge_meta = product.metafields.custom.returns_badge_text.value | default: product.metafields.custom.returns_badge_text | default: product.metafields.custom.returns_badge_tex.value | default: product.metafields.custom.returns_badge_tex
+                    assign returns_badge_meta_downcase = returns_badge_meta | downcase | strip
+                    assign returns_badge_text = returns_badge_meta | default: block.settings.returns_badge_text | default: 'Free 30-day returns'
+
+                    assign shipping_badge_meta = product.metafields.custom.shipping_badge_text.value | default: product.metafields.custom.shipping_badge_text
+                    assign shipping_badge_meta_downcase = shipping_badge_meta | downcase | strip
+                    assign shipping_badge_text = shipping_badge_meta | default: block.settings.shipping_badge_text | default: 'Ships in 3 days'
+                  -%}
                   <div class="product__badges" {{ block.shopify_attributes }}>
-                    {%- if block.settings.show_returns_badge -%}
+                    {%- if block.settings.show_returns_badge and returns_badge_meta_downcase != 'none' and returns_badge_meta_downcase != 'hide' and returns_badge_meta_downcase != 'false' -%}
                       <span class="product__badge product__badge--returns">
-                        {{ block.settings.returns_badge_text | default: 'Free 30-day returns' }}
+                        {{ returns_badge_text }}
                       </span>
                     {%- endif -%}
-                    {%- if block.settings.show_shipping_badge -%}
+                    {%- if block.settings.show_shipping_badge and shipping_badge_meta_downcase != 'none' and shipping_badge_meta_downcase != 'hide' and shipping_badge_meta_downcase != 'false' -%}
                       <span class="product__badge product__badge--shipping">
-                        {{ block.settings.shipping_badge_text | default: 'Ships in 3 days' }}
+                        {{ shipping_badge_text }}
                       </span>
                     {%- endif -%}
                   </div>
@@ -964,7 +973,8 @@
           "type": "text",
           "id": "returns_badge_text",
           "default": "Free 30-day returns",
-          "label": "Returns badge text"
+          "label": "Returns badge text",
+          "info": "Default text. Can be overridden per product via custom.returns_badge_text metafield (or set to 'none' to hide)."
         },
         {
           "type": "checkbox",
@@ -976,7 +986,8 @@
           "type": "text",
           "id": "shipping_badge_text",
           "default": "Ships in 3 days",
-          "label": "Shipping badge text"
+          "label": "Shipping badge text",
+          "info": "Default text. Can be overridden per product via custom.shipping_badge_text metafield (or set to 'none' to hide)."
         }
       ]
     },
